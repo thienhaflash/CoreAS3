@@ -1,0 +1,13 @@
+Create a supplemental independent functionalities for AS3 Flash
+
++	Queue(use nullized Array ?)
++	Task
++	Callback/Signal
++	Bindable Pair/State/Dynamic
++	ObjectInjector
++	Math utils (interpolate)
++	DrawingAPI (dashedline, ...)
++	VisualObject - Masked, LimitedStates
++	Optimizers	- Buffer, ObjectPool, Thread, ObjectCache
+
++	Components - Tree, DataGrid, Tab
