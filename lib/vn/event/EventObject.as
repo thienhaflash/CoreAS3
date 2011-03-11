@@ -12,5 +12,10 @@ package vn.event
 		public var dispatcher	: Dispatcher;	//so user won't need to cast or use Object lookup
 		public var source 		: Object;		//the one who tell dispatcher to dispatch
 		public var userData		: Object;		//user attached data
+		
+		public function EventObject(source: Object, dispatcher: Dispatcher) {
+			this.source		= source;
+			this.dispatcher = dispatcher;
+		}
 	}
 }
