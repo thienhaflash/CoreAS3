@@ -48,7 +48,11 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="lib\hamcrest-1.0.2.swc" />
+    <element path="lib\flexunit-4.0.0.swc" />
+    <element path="lib\flexunit-cilistener-4.0.0.swc" />
+    <element path="lib\flexunit-uilistener-4.0.0.swc" />
+    <element path="lib\FlexUnit1Lib.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

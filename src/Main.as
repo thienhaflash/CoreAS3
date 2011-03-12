@@ -2,6 +2,9 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import org.flexunit.internals.TraceListener;
+	import org.flexunit.runner.FlexUnitCore;
+	import test.DispatcherTest;
 	
 	/**
 	 * ...
@@ -9,17 +12,13 @@ package
 	 */
 	public class Main extends Sprite 
 	{
+		private var core : FlexUnitCore;
 		
 		public function Main():void 
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
+			core = new FlexUnitCore();
+			core.addListener( new TraceListener());
+			core.run(DispatcherTest);
 		}
 		
 	}

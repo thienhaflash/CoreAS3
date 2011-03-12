@@ -1,8 +1,25 @@
-package vn.event 
+package vn.core.event 
 {
 	/**
-	 * ...
-	 * @author thienhaflash
+	 * A better AS3 Event system - fast, stable and full features
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @update	12 March 2011
+	 * @feature
+	 * 		Support both Listeners (call handler with eventObject) and Callbacks (call handler with params)
+	 * 		Support priority with LOW (<0) and HIGH (>0) or NORMAL (=0, default)
+	 * 		Support custom dispatching phase (first = 0, update = n, last = -1)
+	 * 		Get the number of listeners or callback for a specific event type
+	 * 		Batch add / remove Listeners / Callbacks by shorthand utils
+	 * 
+	 * @technique
+	 * 		Binary search based on priority (primary) and id (secondary) making adding / removing listeners blazing fast
+	 * 		Composition style, user can both extends from dispatcher or use it as a component
+	 * 
+	 * @todo
+	 * 		Consider pooling for AListener
+	 * 		Consider explicit overwriting support if existed { event + handlers } found
+	 * 
 	 */
 	public class Dispatcher 
 	{
@@ -22,7 +39,7 @@ package vn.event
 			var aes : AEventStore = _eventStores[type] || new AEventStore();
 			_eventStores[type] = aes;
 			if (!aes.dict[handler]) aes.add(new AListener(handler, userData, null, priority, once, false));
-			//TODO : what else if registered ? update userData, priority, once ?
+			//TODO : what else if registered ? update userData, priority, once ? - temporary doing nothing
 		}
 		
 		public function addCallback(type: String, handler: Function, params: Array = null, priority: int = 0, once: Boolean = false): void {
@@ -37,9 +54,9 @@ package vn.event
 			if (alsn) aes.remove(alsn);
 		}
 		
-		public function hasListenerOrCallback(type: String): Boolean {
+		public function numListenerOrCallback(type: String): int {
 			var aes : AEventStore = _eventStores[type];
-			return aes != null && aes.listeners.length > 0;
+			return aes != null ? aes.listeners.length : 0;
 		}
 		
 		public function get eventObject():EventObject { return _eventObject; }
@@ -65,7 +82,7 @@ package vn.event
 			}
 		}
 		
-		private function informAListener(alsn: AListener):void 
+		private function informAListener(alsn: AListener, idx: int, arr: Array):void 
 		{
 			if (alsn.isCallback) {
 				_eventObject.userData = null; //clear userData previosly attached
@@ -77,30 +94,26 @@ package vn.event
 			if (alsn.once) _tmpAES.remove(alsn);
 		}
 		
-	/*************************
-	 * 	  SHORT HAND UTILS
-	 ************************/
+	/********************************************************************************************
+	 *	SHORT HAND UTILS
+	 * 	These type of code won't run everyframe just once, so performance is not critical
+	 *  we'd rather clear code than optimized
+	 ********************************************************************************************/
 		
-		public function addListeners(types: * , handlers: * , userDatas: * , priorities: * = 0, onces : * = false): void {
+		public function addListeners(types: * , handlers: * , userDatas: * = null, priorities: * = 0, onces : * = false): void {
 			var l : int = types is Array ? types.length : handlers.length;
-			
-			//this is just short-hand code, these type of code won't run everyframe, just once
-			//so performance is not critical, we'd rather clear code than optimized
 			for (var i : int = 0; i < l; i++) {
 				addListener(	  types is Array		? types[i]		: types
 								, handlers is Array		? handlers[i]	: handlers
-								, userData is Array		? userDatas[i]	: userDatas
+								, userDatas is Array	? userDatas[i]	: userDatas
 								, priorities is Array	? priorities[i]	: priorities
 								, onces is Array		? onces[i]		: onces
 							);
 			}
 		}
 		
-		public function addCallbacks(types: *, handlers: *, priority: * = 0, onces : * = false, ...params): void {
+		public function addCallbacks(types: *, handlers: *, priorities: * = 0, onces : * = false, ...params): void {
 			var l : int = types is Array ? types.length : handlers.length;
-			
-			//this is just short-hand code, these type of code won't run everyframe, just once
-			//so performance is not critical, we'd rather clear code than optimized
 			var sameParams : Boolean = params.length == 1;
 			for (var i : int = 0; i < l; i++) {
 				addCallback(	  types is Array		? types[i]		: types
@@ -109,22 +122,32 @@ package vn.event
 								, priorities is Array	? priorities[i] : priorities
 								, onces is Array		? onces[i]		: onces
 							);
+			}
+		}
+		
+		public function removeListenersOrCallbacks(types: *, handlers: *): void {
+			var l : int = types is Array ? types.length : handlers.length;
+			for (var i : int = 0; i < l; i++) {
+				removeListenerOrCallback(	 types is Array		? types[i]		: types
+											, handlers is Array	? handlers[i]	: handlers
+							);
+			}
 		}
 	}
 }
 
 import flash.utils.Dictionary;
-import flash.utils.getTimer;
 
-class AListener { //consider pooling ?
+class AListener {
 	public var priority		: int;
-	public var timeStamp	: int;
+	public var id			: int;
 	
 	public var handler		: Function;
 	public var userData		: Object;
 	public var params		: Array;
 	public var isCallback	: Boolean;
-	public var once			: Boolean;
+	public var once			: Boolean;	
+	private static var idCounter : int;
 	
 	public function AListener(handler: Function, userData: Object, params: Array, priority: int, once: Boolean, isCallback: Boolean) {
 		this.handler	= handler;
@@ -133,13 +156,17 @@ class AListener { //consider pooling ?
 		this.priority	= priority;
 		this.once		= once;
 		this.isCallback	= isCallback;
-		timeStamp		= getTimer();
+		id				= idCounter++;
+	}
+	
+	public function toString(): String {
+		return '[AListener ' + priority + '-' + id + ']';
 	}
 }
 
 class AEventStore {
 	public var dict			: Dictionary; //all handler --> AListener instance, use to check existance
-	public var listeners	: Array; //of AListener, sorted by priorities and timeStamp, use to dispatch events
+	public var listeners	: Array; //of AListener, sorted by priorities and id, use to dispatch events
 	
 	public function AEventStore() {
 		dict		= new Dictionary();
@@ -148,46 +175,55 @@ class AEventStore {
 	
 	public function add(alsn: AListener): AListener {
 		var pos : int = findPosition(alsn);
-		if (alsn != listeners[pos]) listeners.splice(pos, 0, alsn);
+		if (alsn != listeners[pos]) {
+			dict[alsn.handler] = alsn;
+			listeners.splice(pos, 0, alsn);
+		}
+		//trace('add: ', listeners);
 		return alsn;
 	}
 	
 	public function remove(alsn: AListener): AListener {
-		var pos : int = findPosition(alsn);
-		if (alsn == listeners[pos]) listeners.splice(pos, 1); //found ! then remove it
+		var pos : int = findPosition(alsn, true);
+		//trace('remove pos = ', pos, ' with id : ', alsn.id);
+		if (alsn == listeners[pos]) {
+			dict[alsn.handler] = null;
+			listeners.splice(pos, 1); //found ! then remove it
+		}
 		return alsn;
 	}
 	
-	/* listeners should be sorted from Max to Min */
-	public function findPosition(alsn: AListener): int {
+	
+	/**
+	 * find the gaps to put item in, or the item position itself
+	 * @param	alsn the item to find
+	 * @param	findItem find the gap to insert item in (0..length) or find the item to remove (0..length-1)
+	 * @return the position of the gap or the position of the item
+	 */
+	public function findPosition(alsn: AListener, findItem : Boolean = false): int {
 		var l 	: int = 0;
 		var r 	: int = listeners.length - 1;
-		var m	: int = r >> 1;
+		var m	: int = (r - l) >> 1;
 		var lsn	: AListener;
 		
-		if (r == 0) return 0; //empty list
+		if (r < l) return l; //empty list
 		
-		/* priority	: mandatory term - bigger first, time : secondary term - smaller first */
+		/* priority	: mandatory term - bigger first, id : secondary term - smaller first */
 		lsn = listeners[l];
 		var lp	: int = lsn.priority;
-		var lt	: int = lsn.timeStamp;
+		var lt	: int = lsn.id;
 		lsn = listeners[r];
 		var rp	: int = lsn.priority;
-		var rt	: int = lsn.timeStamp;
+		var rt	: int = lsn.id;
 		lsn = listeners[m];
 		var mp	: int = lsn.priority;
-		var mt	: int = lsn.timeStamp;
+		var mt	: int = lsn.id;
 		
 		var ap	: int = alsn.priority;
-		var at	: int = alsn.timeStamp;
+		var at	: int = alsn.id;
 		
-		if (lp < ap || (lp == ap && lt > at)) {//before the first one
-			return 0;
-		}
-		
-		if (rp > ap || (rp == ap && rt < at)) {
-			return listeners.length;
-		}
+		if (ap > lp || (lp == ap && (at < lt || (at == lt && findItem)))) return 0; //before the first one //will fix this 
+		if (ap < rp || (rp == ap && (at > rt || (at == rt && findItem)))) return findItem ? listeners.length-1 : listeners.length;
 		
 		while (l < m) {
 			if (ap == mp && at == mt) return m; //correct value
@@ -203,8 +239,8 @@ class AEventStore {
 			m = (r + l) >> 1;
 			lsn = listeners[m];
 			mp = lsn.priority;
-			mt = lsn.timeStamp;
+			mt = lsn.id;
 		}
-		return m; //nearest, bigger value
+		return findItem ? m : m + 1; //nearest, bigger value
 	}
 }

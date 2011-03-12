@@ -1,4 +1,4 @@
-package vn.event 
+package vn.core.event 
 {
 	/**
 	 * ...
