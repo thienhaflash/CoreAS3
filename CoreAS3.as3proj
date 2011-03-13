@@ -72,11 +72,16 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\Main.as" />
+    <compile path="src\test\LoaderTest.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="CoreAS3.lxml" />
+    <hidden path="lib\FlexUnit1Lib.swc" />
+    <hidden path="lib\flexunit-4.0.0.swc" />
+    <hidden path="lib\flexunit-cilistener-4.0.0.swc" />
+    <hidden path="lib\flexunit-uilistener-4.0.0.swc" />
+    <hidden path="lib\hamcrest-1.0.2.swc" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />

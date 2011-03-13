@@ -5,6 +5,7 @@ package
 	import org.flexunit.internals.TraceListener;
 	import org.flexunit.runner.FlexUnitCore;
 	import test.DispatcherTest;
+	import test.LoaderTest;
 	
 	/**
 	 * ...
@@ -18,7 +19,8 @@ package
 		{
 			core = new FlexUnitCore();
 			core.addListener( new TraceListener());
-			core.run(DispatcherTest);
+			//core.run(DispatcherTest);
+			core.run(LoaderTest);
 		}
 		
 	}

@@ -1,18 +1,22 @@
 package vn.core.event 
 {
+	import flash.display.Shape;
+	import flash.events.Event;
+	import flash.utils.Dictionary;
 	/**
 	 * A better AS3 Event system - fast, stable and full features
 	 * 
 	 * @author	thienhaflash (thienhaflash@gmail.com)
-	 * @update	12 March 2011
-	 * @feature
+	 * @version 0.1.0
+	 * @updated	12 March 2011
+	 * @features
 	 * 		Support both Listeners (call handler with eventObject) and Callbacks (call handler with params)
 	 * 		Support priority with LOW (<0) and HIGH (>0) or NORMAL (=0, default)
 	 * 		Support custom dispatching phase (first = 0, update = n, last = -1)
 	 * 		Get the number of listeners or callback for a specific event type
 	 * 		Batch add / remove Listeners / Callbacks by shorthand utils
 	 * 
-	 * @technique
+	 * @techniques
 	 * 		Binary search based on priority (primary) and id (secondary) making adding / removing listeners blazing fast
 	 * 		Composition style, user can both extends from dispatcher or use it as a component
 	 * 
@@ -21,8 +25,26 @@ package vn.core.event
 	 * 		Consider explicit overwriting support if existed { event + handlers } found
 	 * 
 	 */
-	public class Dispatcher 
+		
+	public class Dispatcher implements IDispatcher
 	{
+		private static var heart : Shape		= new Shape();//listen to EnterFrame Event
+		private static var list : Dictionary	= new Dictionary();
+		
+		public static function doNextFrame(f: Function, params : Array = null): void {
+			heart.addEventListener(Event.ENTER_FRAME, _onTrigger);
+			list[f] = params;
+		}
+		
+		private static function _onTrigger(e: Event): void {
+			heart.removeEventListener(Event.ENTER_FRAME, _onTrigger);
+			for (var f: * in list) {
+				(f as Function).apply(null, list[f]);
+			}
+			list = new Dictionary();
+		}
+		
+		
 		protected var _eventStores	: Object; //save references to AEventStore, each one a type
 		protected var _eventObject	: EventObject; // the only one eventObject : no recursive dispatch allowed
 		
@@ -59,7 +81,13 @@ package vn.core.event
 			return aes != null ? aes.listeners.length : 0;
 		}
 		
+		public function removeAllListenersOrCallbacks(): void {
+			_eventStores = { };
+		}
+		
 		public function get eventObject():EventObject { return _eventObject; }
+		
+		public function get isDispatching():Boolean { return _isDispatching; }
 		
 	/*************************
 	 * 		INTERNAL
@@ -96,7 +124,7 @@ package vn.core.event
 		
 	/********************************************************************************************
 	 *	SHORT HAND UTILS
-	 * 	These type of code won't run everyframe just once, so performance is not critical
+	 * 	These type of codes won't run every frames, just once, so performance is not critical
 	 *  we'd rather clear code than optimized
 	 ********************************************************************************************/
 		
@@ -222,8 +250,8 @@ class AEventStore {
 		var ap	: int = alsn.priority;
 		var at	: int = alsn.id;
 		
-		if (ap > lp || (lp == ap && (at < lt || (at == lt && findItem)))) return 0; //before the first one //will fix this 
-		if (ap < rp || (rp == ap && (at > rt || (at == rt && findItem)))) return findItem ? listeners.length-1 : listeners.length;
+		if (ap > lp || (lp == ap && (at < lt || (at == lt && findItem)))) return 0; //before the first one
+		if (ap < rp || (rp == ap && (at > rt || (at == rt && findItem)))) return findItem ? listeners.length-1 : listeners.length; //after the last one
 		
 		while (l < m) {
 			if (ap == mp && at == mt) return m; //correct value

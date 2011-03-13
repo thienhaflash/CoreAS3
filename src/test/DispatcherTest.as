@@ -9,7 +9,7 @@ package test
 	 * ...
 	 * @author thienhaflash
 	 */
-	public class DispatcherTest extends MovieClip
+	public class DispatcherTest
 	{
 		protected var _dispatcher : Dispatcher;
 		
@@ -144,7 +144,6 @@ package test
 			assertEquals(0, _dispatcher.numListenerOrCallback('Event4'));
 			assertEquals(0, _dispatcher.numListenerOrCallback('Event5'));
 		}
-		
 		
 		[Test]
 		public function batchListen_5Events_5Handlers(): void {				
