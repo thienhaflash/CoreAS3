@@ -9,6 +9,7 @@ package vn.core.load.core
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import vn.core.event.EnterFrame;
 	import vn.core.load.constant.LdType;
 	import vn.core.load.core.LdBase;
 	/**
@@ -17,8 +18,6 @@ package vn.core.load.core
 	 */
 	public class LdVideo extends LdBase
 	{
-		protected var _heart		: Shape;
-		
 		public var stream 			: NetStream;
 		public var connection		: NetConnection;
 		public var video			: Video;
@@ -26,15 +25,8 @@ package vn.core.load.core
 		public var metaData			: Object;
 		public var duration			: Number;
 		
-		//protected var _wait4Meta	: Boolean;
-		//protected var _attachVideo	: Boolean;
-		//protected var _useStream	: Boolean;
-		//protected var _bufferTime	: Number;	
-		
 		public function LdVideo() 
 		{
-			_heart = new Shape();
-			
 			connection = new NetConnection();
 			connection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, 		_onError);
 			connection.addEventListener(IOErrorEvent.IO_ERROR, 				_onError);
@@ -46,24 +38,17 @@ package vn.core.load.core
 		}
 		
 		override protected function _startLoad():void 
-		{
-			//var ud : Object = vars;
-			//
-			//waitMeta		= !(ud.waitMeta == false);		//default : true
-			//pauseAtStart	= !(ud.pauseAtStart == false);	//default : true
-			//useNetStatus	= ud.useNetStatus == true;		//default : false
-			//closeStream	= !ud.useNetStatus;//if using NetStatus - don't close the stream automatically when loaded
-			
-			//stream.checkPolicyFile = false;
+		{	
+			stream.checkPolicyFile = _vars.checkPolicy;
 			stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, 	_onError);
 			stream.addEventListener(IOErrorEvent.IO_ERROR, 			_onError);
-			//if (useNetStatus) stream.addEventListener(NetStatusEvent.NET_STATUS,		_onNetStatus);
+			if (_vars.useNetStatus) stream.addEventListener(NetStatusEvent.NET_STATUS,		_onNetStatus);
 			stream.play(_vars.url);
-			//if (pauseAtStart) stream.pause();
-			_heart.addEventListener(Event.ENTER_FRAME, _updateProgress);
+			if (_vars.pauseAtStart) stream.pause();
+			EnterFrame.onEach(_updateProgress);
 		}
 		
-		private function _updateProgress(e:Event):void 
+		private function _updateProgress():void 
 		{
 			var stream	: NetStream = stream;
 			var pct : Number = stream.bytesLoaded / stream.bytesTotal;
@@ -73,10 +58,13 @@ package vn.core.load.core
 			_percent = pct;
 			
 			if (pct >= 1) {
-				_heart.removeEventListener(Event.ENTER_FRAME, _updateProgress);
+				EnterFrame.remove_onEach(_updateProgress);
 				if (!_vars.waitForMeta || metaData != null) {
 					stopLoad();
-				}				
+				}
+				super._onComplete(null);
+			} else {
+				super._onProgress(null);
 			}
 		}
 		
@@ -87,7 +75,10 @@ package vn.core.load.core
 		
 		private function _onMetaData(info: Object):void
 		{
-			if (_vars.waitForMeta && percent >= 1) {
+			metaData = info;
+			super._onInfo(null);
+			
+			if (_vars.waitForMeta && _percent >= 1) {
 				stopLoad();
 			}
 		}

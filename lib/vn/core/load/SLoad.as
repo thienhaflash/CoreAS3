@@ -26,8 +26,6 @@ package vn.core.load
 			if (ldQueueClass) _impl	= new ldQueueClass(id);
 		}
 		
-		
-		
 		public static function getItem(idOrUrl: String, autoNew: Boolean = true): LdVars { return null};
 		
 		protected static var ldQueueClass	: Class;

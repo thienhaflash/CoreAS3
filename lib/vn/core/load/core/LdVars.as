@@ -28,8 +28,9 @@ package vn.core.load.core
 		/* config video */
 		internal var bufferTime		: Number;
 		internal var attachVideo	: Boolean;
-		internal var useStream		: Boolean;
+		internal var useNetStatus	: Boolean;
 		internal var waitForMeta	: Boolean;
+		internal var pauseAtStart	: Boolean;
 		
 		/* config audio */
 		internal var duration		: Number;
@@ -83,25 +84,27 @@ package vn.core.load.core
 	 * 		CONFIGURATORS
 	 ***************************/
 		
-		public function configData(byteArrayOrObject : * , contentType: String, method: String = URLRequestMethod.POST): LdVars {
+		public function configData(byteArrayOrObject : * = null, contentType: String = null, method: String = null): LdVars {
 			this.data			= byteArrayOrObject;
 			this.contentType	= contentType;
-			this.method			= method;
+			this.method			= method ? method : URLRequestMethod.POST;
 			this.type			= LdType.DATA;
 			return this;
 		}
 		
-		public function configVideo(bufferTime: Number = 1, duration: Number = 0, attachVideo: Boolean = false, useStream: Boolean = false, waitForMeta: Boolean = true): LdVars {
+		public function configVideo(bufferTime: Number = 1, duration: Number = 0, useNetStatus: Boolean = true, checkPolicy : Boolean = true, pauseAtStart: Boolean = true, attachVideo: Boolean = false, waitForMeta: Boolean = true): LdVars {
 			this.bufferTime		= bufferTime;
 			this.attachVideo	= attachVideo;
-			this.useStream		= useStream;
 			this.waitForMeta	= waitForMeta;
 			this.duration		= duration;
+			this.checkPolicy	= checkPolicy;
+			this.useNetStatus	= useNetStatus;
+			this.pauseAtStart	= pauseAtStart;
 			this.type			= LdType.VIDEO;
 			return this;
 		}
 		
-		public function configAudio(bufferTime: Number, duration: Number, checkPolicy: Boolean = true): LdVars {
+		public function configAudio(bufferTime: Number = 10, duration: Number = 0, checkPolicy: Boolean = true): LdVars {
 			this.bufferTime		= bufferTime;
 			this.duration		= duration;
 			this.checkPolicy	= checkPolicy;

@@ -51,10 +51,7 @@ package vn.core.load.core
 		protected var _event			: Event;
 		protected var _loadedContent	: * ;
 		protected var _vars				: LdVars;
-		
-		//protected var _id				: String;
-		//protected var _url			: String;
-		//protected var _queue			: String;
+		protected var _queue			: LdQueue;
 		
 		public function get status():String { return _status; }
 		
@@ -73,9 +70,11 @@ package vn.core.load.core
 		
 		public function get url():String { return _vars.url; }
 		
-		public function get queue():String { return _vars.queue; }
+		public function get queue():LdQueue { return _queue; }
 		
 		public function get type(): String { return LdType.UNKNOWN; }
+		
+		internal function setQueue(value: LdQueue):void { _queue = value; }
 		
 	/****************************
 	 * 		OVERRIDE METHODS
@@ -97,16 +96,19 @@ package vn.core.load.core
 			_dispatcher.dispatch(LdEvent.ITEM_COMPLETE);
 			_status = LdStatus.ITEM_LOADED;
 			_dispatcher.dispatch(LdEvent.ITEM_STATUS);
+			_queue.loadNext(false); //consider wait 1 more frame ?
 		}
 		
 		protected function _onProgress(e:ProgressEvent):void
 		{
-			_event			= e;
-			_bytesLoaded	= e.bytesLoaded;
-			_bytesTotal		= e.bytesTotal;
-			_percent		= e.bytesLoaded / e.bytesTotal;
-			//TODO		: check stopAt and do stop
+			if (e) {
+				_event			= e;
+				_bytesLoaded	= e.bytesLoaded;
+				_bytesTotal		= e.bytesTotal;
+				_percent		= e.bytesLoaded / e.bytesTotal;
+			}
 			
+			//TODO		: check stopAt and do stop
 			_dispatcher.dispatch(LdEvent.ITEM_PROGRESS);
 		}
 		

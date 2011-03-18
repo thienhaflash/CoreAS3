@@ -5,6 +5,7 @@ package vn.core.load.core
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import vn.core.event.Dispatcher;
+	import vn.core.event.EnterFrame;
 	import vn.core.load.constant.LdPriority;
 	import vn.core.load.constant.LdStatus;
 	import vn.core.load.constant.LdType;
@@ -30,6 +31,9 @@ package vn.core.load.core
 		public function get currentItem() :LdVars { return _currentItem; }	
 		public function get currentLoader()	:LdBase { return _currentLoader; }	
 		public function get id() :* { return _id; }
+		public function get dispatcher():Dispatcher { return _dispatcher; }
+		
+		public function get status():String { return _status; }
 		
 		public function LdQueue(queueId: *) {
 			_id = queueId;
@@ -47,6 +51,20 @@ package vn.core.load.core
 		}
 		
 	/********************
+	 * 		SHORTHAND
+	 *******************/	
+		
+		public function on_QUEUE_STATUS(handler: Function, params: Array = null): LdQueue {
+			_dispatcher.addCallback(LdEvent.QUEUE_STATUS, handler, params);
+			return this;
+		}
+		
+		public function on_QUEUE_ITEM_ADDED(handler: Function, params: Array = null): LdQueue {
+			_dispatcher.addCallback(LdEvent.QUEUE_ITEM_ADDED, handler, params);
+			return this;
+		}
+		
+	/********************
 	 * 		API
 	 *******************/
 		
@@ -56,22 +74,27 @@ package vn.core.load.core
 				If pExtension was not specified, default values from ALoader class wil be used
 				Lasted added ALoader will take control over extension registration (overwrite previous ones, if exist).
 			*/
+			ld.setQueue(this); //allow callback
+			
 			if (!pExtension) pExtension = ld.extension;
 			var arr : Array = pExtension.split('|');
 			var l : int = arr.length;
 			for (var i: int = 0; i < l; i++) {
 				_extensions[arr[i]] = ld;
 			}
+			_extensions[ld.type] = ld;
 		}
 		
 		public function add(data: LdVars , priority: String = LdPriority.QUEUE_FIRST, autoResume: Boolean = true): LdVars {
 			if (!data) { trace('trying to load a null URL'); return data; }
 			
 			if (data.url == null) data.url = data.request.url; //user used a request !
-			if (data.type == LdType.UNKNOWN) data.type = getLd(data.url).type;
-			
+			data.queue = _id;
 			_dict[data.url] = data;
 			_dict[data.id] = data;
+			
+			var idx : int = _queue.indexOf(data); //TODO : OPTIMIZE !
+			if (idx != -1) _queue.splice(idx, 1); //remove existed one to apply new priority rule
 			
 			switch (priority) {
 				case LdPriority.QUEUE_FIRST	: _queue.unshift(data);	break;
@@ -82,9 +105,8 @@ package vn.core.load.core
 					if (autoResume || oldStatus != LdStatus.QUEUE_PAUSED) loadNext(); break;
 				//TODO : do something for ONLY_ME and PRELOAD
 			}
-			
 			_dispatcher.dispatch(LdEvent.QUEUE_ITEM_ADDED);
-			if (autoResume || _status == LdStatus.QUEUE_IDLE) Dispatcher.doNextFrame(loadNext);
+			if (autoResume || _status == LdStatus.QUEUE_IDLE) EnterFrame.onNext(loadNext);
 			//trace('autoResume ', autoResume, _status);
 			return data;
 		}
@@ -99,15 +121,21 @@ package vn.core.load.core
 			} else {
 				//FIXME : what if ldi is currently at loading phase ? which means we must stop the loading first if it's the same id or just return the instance if it's using URL
 				if (id) {//overwrite by same id - [remove old / create new] url association
+					//trace('reuse id');
 					delete _dict[ldi.url];
 					_dict[url] = ldi;
 					ldi.url = url;
 				} else {//overwrite by same url - remove old id association, if existed
+					//trace('reuse URL');
 					if (ldi.id)  delete _dict[ldi.id];
 					ldi.id = id;
 				}
 			}
 			return ldi;
+		}
+		
+		public function addURL(url: String, id: String = null): LdVars {
+			return add(get(url, id, true));
 		}
 		
 		public function remove(idOrURL: String): void {
@@ -122,8 +150,8 @@ package vn.core.load.core
 		}
 		
 		public function empty(): LdQueue {
-			_dict		= new Dictionary();
-			_queue		= [];
+			_dict			= new Dictionary();
+			_queue			= [];
 			_currentItem	= null;
 			setStatus(LdStatus.QUEUE_IDLE);
 			return this;
@@ -149,19 +177,27 @@ package vn.core.load.core
 			return _extensions[type];
 		}
 		
-		private function loadNext(): void {
-			if (_status == LdStatus.QUEUE_RUNNING) return; //skip if it's loading now
+		internal function loadNext(check: Boolean = true): void { /* internal to support callback from LdBase */
+			if (check && _status == LdStatus.QUEUE_RUNNING) return; //skip if it's loading now
 			
 			var l : int		= _queue.length;
+			_currentItem	= null;
 			while (--l >= 0) {
 				_currentItem = _queue.shift();
 				if (_currentItem && _currentItem.url) break; //a valid item found !
 			}
 			
 			if (_currentItem) {
-				_currentLoader = getLd(_currentItem.url);
-				_currentLoader.startLoad(_currentItem);
-				setStatus(LdStatus.QUEUE_RUNNING);
+				if (_currentItem.type == LdType.UNKNOWN) _currentItem.type = getLd(_currentItem.url) ? getLd(_currentItem.url).type : LdType.UNKNOWN;
+				if (_currentItem.type != LdType.UNKNOWN) { //has Loader of the specified type
+					_currentLoader = _extensions[_currentItem.type];
+					_currentLoader.startLoad(_currentItem);
+					setStatus(LdStatus.QUEUE_RUNNING);
+				} else { // file is unknown type
+					//TODO : SHOULD WE dispatch an error here ?
+					trace(_currentItem.url + ' is UNKNOWN type so it can not be loaded ');
+					loadNext(); //progress to next one
+				}
 			} else {
 				setStatus(LdStatus.QUEUE_IDLE); //no more links to load
 			}

@@ -18,19 +18,21 @@ package vn.core.load.core
 	public class LdData extends LdBase
 	{
 		public var urlLoader	: URLLoader;
-		public var data			: * ;
-		
 		private var _css		: StyleSheet;
 		private var _xml		: XML;
 		
+		public function get data(): * {
+			return _loadedContent;
+		}
+		
 		public function get dataAsCSS(): StyleSheet {
 			if (!_css) _css = new StyleSheet();
-			_css.parseCSS(data);
+			_css.parseCSS(_loadedContent);
 			return _css;
 		}
 		
 		public function get dataAsXML(): XML {
-			if (!_xml) _xml = XML(data);
+			if (!_xml) _xml = XML(_loadedContent);
 			return _xml;
 		}
 		
@@ -69,14 +71,13 @@ package vn.core.load.core
 				urlLoader = null;
 			}
 			
-			data = null;
-			urlLoader = null;
-			//variables = null;
+			_loadedContent	= null;
+			urlLoader		= null;
 		}
 		
 		override protected function _onComplete(e:Event):void 
 		{
-			data = urlLoader.data;
+			_loadedContent = urlLoader.data;
 			super._onComplete(e);
 		}
 		override public function get type():String { return LdType.DATA; }

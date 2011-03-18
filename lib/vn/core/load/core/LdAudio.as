@@ -52,6 +52,13 @@ package vn.core.load.core
 			}
 		}
 		
+		override protected function _onComplete(e:Event):void 
+		{
+			//if (isNaN(duration)) 
+			duration = sound.length / 1000;
+			super._onComplete(e);
+		}
+		
 		override protected function _onInfo(e:Event):void 
 		{
 			if (e.type == Event.ID3) id3 = ID3Info(sound.id3);

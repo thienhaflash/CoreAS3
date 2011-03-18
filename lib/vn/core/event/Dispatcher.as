@@ -28,23 +28,6 @@ package vn.core.event
 		
 	public class Dispatcher implements IDispatcher
 	{
-		private static var heart : Shape		= new Shape();//listen to EnterFrame Event
-		private static var list : Dictionary	= new Dictionary();
-		
-		public static function doNextFrame(f: Function, params : Array = null): void {
-			heart.addEventListener(Event.ENTER_FRAME, _onTrigger);
-			list[f] = params;
-		}
-		
-		private static function _onTrigger(e: Event): void {
-			heart.removeEventListener(Event.ENTER_FRAME, _onTrigger);
-			for (var f: * in list) {
-				(f as Function).apply(null, list[f]);
-			}
-			list = new Dictionary();
-		}
-		
-		
 		protected var _eventStores	: Object; //save references to AEventStore, each one a type
 		protected var _eventObject	: EventObject; // the only one eventObject : no recursive dispatch allowed
 		
