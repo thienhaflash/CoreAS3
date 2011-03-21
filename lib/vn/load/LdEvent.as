@@ -1,8 +1,14 @@
-package vn.core.load 
+package vn.load 
 {
+	import vn.core.event.Dispatcher;
 	import vn.core.event.EventObject;
-	import vn.core.load.core.LdQueue;
-	import vn.core.load.core.LdVars;
+	import vn.load.core.LdQueue;
+	import vn.load.core.LdConfig;
+	import vn.load.vars.LdAudioVars;
+	import vn.load.vars.LdDataVars;
+	import vn.load.vars.LdGraphicVars;
+	import vn.load.vars.LdVars;
+	import vn.load.vars.LdVideoVars;
 	/**
 	 * ...
 	 * @author 
@@ -21,11 +27,26 @@ package vn.core.load
 		public static const QUEUE_PROGRESS		: String = 'QUEUE_PROGRESS';
 		public static const QUEUE_STATUS		: String = 'QUEUE_STATUS';
 		
-		//public var vars		: LdVars;
-		//public var queue	: LdQueue;
+		public var vars		: LdVars;
 		
-		public function LdEvent() {
-			super(null, null); //FIXME : fix pass the correct parameters
+		public function LdEvent(source: Object) {
+			super(source);
+		}
+		
+		public function get audioVars(): LdAudioVars {
+			return vars as LdAudioVars;
+		}
+		
+		public function get videoVars(): LdVideoVars {
+			return vars as LdVideoVars;
+		}
+		
+		public function get graphicVars(): LdGraphicVars {
+			return vars as LdGraphicVars;
+		}
+		
+		public function get dataVars(): LdDataVars {
+			return vars as LdDataVars;
 		}
 	}
 }

@@ -1,35 +1,67 @@
-package vn.core.load.core 
+package vn.load.core 
 {
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import vn.core.event.Dispatcher;
-	import vn.core.load.constant.LdStatus;
-	import vn.core.load.constant.LdType;
-	import vn.core.load.core.LdVars;
-	import vn.core.load.LdEvent;
+	import vn.load.constant.LdStatus;
+	import vn.load.constant.LdType;
+	import vn.load.core.LdConfig;
+	import vn.load.LdEvent;
+	import vn.load.vars.LdAudioVars;
+	import vn.load.vars.LdDataVars;
+	import vn.load.vars.LdGraphicVars;
+	import vn.load.vars.LdVars;
+	import vn.load.vars.LdVideoVars;
 	/**
 	 * ...
 	 * @author 
 	 */
 	public class LdBase 
 	{
-		protected var _stopAt		: Number;
-		protected var _dispatcher	: Dispatcher;
+		protected var _config		: LdConfig;
+		protected var _queue		: LdQueue;
+		
+		public function get vars(): LdVars {
+			return null;
+		}
+		
+		public function get audioVars(): LdAudioVars {
+			return vars as LdAudioVars;
+		}
+		
+		public function get videoVars(): LdVideoVars {
+			return vars as LdVideoVars;
+		}
+		
+		public function get graphicVars(): LdGraphicVars {
+			return vars as LdGraphicVars;
+		}
+		
+		public function get dataVars(): LdDataVars {
+			return vars as LdDataVars;
+		}
+		
+		internal function setQueue(value: LdQueue):void { _queue = value; }
+		public function get type():String { return LdType.AUDIO; }
 		
 	/****************************
 	 * 			API
 	 ***************************/
 		
-		public function startLoad(data: LdVars): void {//do parse ?
+		protected var _dispatcher	: Dispatcher;
+		
+		public function startLoad(data: LdConfig): void {//do parse ?
 			//check if it's calling while this is dispatching (?)
-			_vars = data;
-			_dispatcher = data.dispatcher;
-			
 			stopLoad();//check if it's loading
+			
+			vars.config	= data;
+			_config			= data;
+			_dispatcher		= data.dispatcher;
+			
 			_startLoad();
 			
 			_dispatcher.dispatch(LdEvent.ITEM_START);
-			_status = LdStatus.ITEM_LOADING;
+			vars.status = LdStatus.ITEM_LOADING;
 			_dispatcher.dispatch(LdEvent.ITEM_STATUS);
 		}
 	 
@@ -39,42 +71,6 @@ package vn.core.load.core
 		}
 		
 		public function get extension(): String { return ''; }	
-		
-	/****************************
-	 * 		INFORMATION
-	 ***************************/
-		
-		protected var _status			: String;
-		protected var _bytesLoaded		: int;
-		protected var _bytesTotal		: int;
-		protected var _percent			: Number;
-		protected var _event			: Event;
-		protected var _loadedContent	: * ;
-		protected var _vars				: LdVars;
-		protected var _queue			: LdQueue;
-		
-		public function get status():String { return _status; }
-		
-		public function get bytesLoaded():int {	return _bytesLoaded; }
-		
-		public function get bytesTotal():int { return _bytesTotal; }
-		
-		public function get percent():Number { return _percent;	}
-		
-		public function get event():Event {	return _event; }
-		
-		public function get loadedContent():* {	return _loadedContent; }
-		
-		
-		public function get id():String { return _vars.id; }
-		
-		public function get url():String { return _vars.url; }
-		
-		public function get queue():LdQueue { return _queue; }
-		
-		public function get type(): String { return LdType.UNKNOWN; }
-		
-		internal function setQueue(value: LdQueue):void { _queue = value; }
 		
 	/****************************
 	 * 		OVERRIDE METHODS
@@ -90,22 +86,23 @@ package vn.core.load.core
 			
 		protected function _onComplete(e:Event):void 
 		{
-			_event		= e;
-			_percent	= 1;
+			vars.event		= e;
+			vars.percent	= 1;
 			
 			_dispatcher.dispatch(LdEvent.ITEM_COMPLETE);
-			_status = LdStatus.ITEM_LOADED;
+			vars.status = LdStatus.ITEM_LOADED;
 			_dispatcher.dispatch(LdEvent.ITEM_STATUS);
+			
 			_queue.loadNext(false); //consider wait 1 more frame ?
 		}
 		
 		protected function _onProgress(e:ProgressEvent):void
 		{
 			if (e) {
-				_event			= e;
-				_bytesLoaded	= e.bytesLoaded;
-				_bytesTotal		= e.bytesTotal;
-				_percent		= e.bytesLoaded / e.bytesTotal;
+				vars.event			= e;
+				vars.bytesLoaded	= e.bytesLoaded;
+				vars.bytesTotal		= e.bytesTotal;
+				vars.percent		= e.bytesLoaded / e.bytesTotal;
 			}
 			
 			//TODO		: check stopAt and do stop
@@ -114,10 +111,10 @@ package vn.core.load.core
 		
 		protected function _onError(e:Event):void 
 		{
-			_event = e;
+			vars.event = e;
 			
 			_dispatcher.dispatch(LdEvent.ITEM_ERROR);
-			_status = LdStatus.ITEM_ERROR;
+			vars.status = LdStatus.ITEM_ERROR;
 			_dispatcher.dispatch(LdEvent.ITEM_STATUS);
 			
 			/* 	User may have other files in the list, so once callback's trigger fired, the new link is loaded in 
@@ -132,7 +129,7 @@ package vn.core.load.core
 		
 		protected function _onInfo(e:Event):void 
 		{
-			_event = e;
+			vars.event = e;
 			_dispatcher.dispatch(LdEvent.ITEM_INFO);
 		}
 	}

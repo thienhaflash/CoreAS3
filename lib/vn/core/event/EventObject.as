@@ -13,7 +13,7 @@ package vn.core.event
 		public var source 		: Object;		//the one who tell dispatcher to dispatch
 		public var userData		: Object;		//user attached data
 		
-		public function EventObject(source: Object, dispatcher: Dispatcher) {
+		public function EventObject(source: Object, dispatcher: Dispatcher = null) {
 			this.source		= source;
 			this.dispatcher = dispatcher;
 		}

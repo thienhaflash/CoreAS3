@@ -1,4 +1,4 @@
-package vn.core.load 
+package vn.load 
 {
 	import flash.display.Loader;
 	import flash.net.URLLoader;
@@ -11,8 +11,8 @@ package vn.core.load
 	import flash.utils.getDefinitionByName;
 	import vn.core.event.Dispatcher;
 	import vn.core.event.IDispatcher;
-	import vn.core.load.core.LdQueue;
-	import vn.core.load.core.LdVars;
+	import vn.load.core.LdQueue;
+	import vn.load.core.LdConfig;
 	/**
 	 * ...
 	 * @author 
@@ -22,11 +22,11 @@ package vn.core.load
 		protected var _impl		: * ;
 		
 		public function SLoad(id: *) {
-			if (!ldQueueClass) ldQueueClass	= getDefinitionByName('vn.core.load.core.LdQueue') as Class;
+			if (!ldQueueClass) ldQueueClass	= getDefinitionByName('vn.load.core.LdQueue') as Class;
 			if (ldQueueClass) _impl	= new ldQueueClass(id);
 		}
 		
-		public static function getItem(idOrUrl: String, autoNew: Boolean = true): LdVars { return null};
+		public static function getItem(idOrUrl: String, autoNew: Boolean = true): LdConfig { return null};
 		
 		protected static var ldQueueClass	: Class;
 		protected static var queues			: Dictionary = new Dictionary();
@@ -44,8 +44,8 @@ package vn.core.load
 	 * 		LOADING API
 	 *******************************/	
 		
-		public function add(urlOrRequest : * , prioritize : String = LdPriority.QUEUE_FIRST, id: String = null): LdVars {
-			var _data	: LdVars;
+		public function add(urlOrRequest : * , prioritize : String = LdPriority.QUEUE_FIRST, id: String = null): LdConfig {
+			var _data	: LdConfig;
 			var _url	: String	= urlOrRequest is  URLRequest ? (urlOrRequest as  URLRequest).url : urlOrRequest;
 			
 			if (_impl && _url) {//ignore if urlOrRequest is Null
@@ -56,18 +56,18 @@ package vn.core.load
 			return _data;
 		}
 		
-		//public function preload(urlOrRequest : String, stopAtPercentOrBytes: Number = 1, id: String = null): LdVars {
+		//public function preload(urlOrRequest : String, stopAtPercentOrBytes: Number = 1, id: String = null): LdConfig {
 			//if (_impl) {//use preload counter (?)
 				//_data.stopAt = stopAtPercentOrBytes;
 			//}
 			//return this;
 		//}
 		
-		public function remove(urlOrId: String): LdVars {
+		public function remove(urlOrId: String): LdConfig {
 			return null;
 		}
 		
-		public function get(urlOrId: String): LdVars {
+		public function get(urlOrId: String): LdConfig {
 			return null;
 		}
 		

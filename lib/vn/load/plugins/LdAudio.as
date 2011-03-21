@@ -1,4 +1,4 @@
-package vn.core.load.core 
+package vn.load.plugins 
 {
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -8,63 +8,63 @@ package vn.core.load.core
 	import flash.media.SoundChannel;
 	import flash.media.SoundLoaderContext;
 	import flash.net.URLRequest;
-	import vn.core.load.constant.LdType;
-	import vn.core.load.core.LdBase;
+	import vn.load.constant.LdType;
+	import vn.load.core.LdBase;
+	import vn.load.vars.LdAudioVars;
+	import vn.load.vars.LdVars;
 	/**
 	 * ...
 	 * @author 
 	 */
 	public class LdAudio extends LdBase
 	{
-		public var id3 		: ID3Info;
-		public var sound	: Sound;
-		public var channel	: SoundChannel;
-		public var context	: SoundLoaderContext;
-		public var duration	: Number;
-		
-		override public function get type():String { return LdType.AUDIO; }
+		protected var _vars : LdAudioVars = new LdAudioVars();
 		
 		override protected function _startLoad():void 
 		{
+			if (!_config.request) _config.request = new URLRequest(_config.url);
+			_vars.context.bufferTime		= _config.bufferTime;
+			_vars.context.checkPolicyFile	= _config.checkPolicy;
+			
 			var snd : Sound = new Sound();
-			sound = snd;
+			_vars.sound		= snd;
 			snd.addEventListener(Event.COMPLETE, 			_onComplete);
 			snd.addEventListener(ProgressEvent.PROGRESS,	_onProgress);
 			snd.addEventListener(IOErrorEvent.IO_ERROR,		_onError);
 			snd.addEventListener(Event.ID3, 				_onInfo);
 			snd.addEventListener(Event.OPEN, 				_onInfo);
-			
-			snd.load(new URLRequest(url), context);
+			snd.load(_config.request, _vars.context);
 		}
 		
 		override protected function _stopLoad():void 
 		{
-			if (sound) {
-				var snd : Sound = sound;
+			var snd : Sound = _vars.sound;
+			if (snd) {
 				snd.removeEventListener(Event.COMPLETE, 		_onComplete);
 				snd.removeEventListener(ProgressEvent.PROGRESS,	_onProgress);
 				snd.removeEventListener(IOErrorEvent.IO_ERROR,	_onError);				
 				snd.removeEventListener(Event.ID3, 				_onInfo);
 				snd.removeEventListener(Event.OPEN, 			_onInfo);
-				
-				sound	= null;
-				context = null;
+				_vars.sound	= null;
 			}
 		}
 		
 		override protected function _onComplete(e:Event):void 
 		{
 			//if (isNaN(duration)) 
-			duration = sound.length / 1000;
+			_vars.duration = _vars.sound.length / 1000;
 			super._onComplete(e);
 		}
 		
 		override protected function _onInfo(e:Event):void 
 		{
-			if (e.type == Event.ID3) id3 = ID3Info(sound.id3);
+			if (e.type == Event.ID3) _vars.id3 = ID3Info(_vars.sound.id3);
 			super._onInfo(e);
 		}
 		
+		override public function get vars():LdVars { return _vars; }
+		
 		override public function get extension():String { return '.acc|.mp3|.f4a|.f4b'; }
+		override public function get type():String { return LdType.AUDIO; }
 	}
 }

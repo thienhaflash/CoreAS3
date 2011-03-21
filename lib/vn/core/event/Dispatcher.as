@@ -33,7 +33,11 @@ package vn.core.event
 		
 		public function Dispatcher(eventObj: EventObject = null) {
 			_eventStores = { };
-			if (!_eventObject) _eventObject = new EventObject(this, this); //not pass eventObj by means extends from Dispatcher
+			if (!_eventObject) {
+				_eventObject = new EventObject(this, this); 
+			} else {
+				_eventObject.dispatcher = this;
+			}
 		}
 		
 	/*************************

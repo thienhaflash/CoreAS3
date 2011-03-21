@@ -3,12 +3,8 @@ package test
 	import flash.display.MovieClip;
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
-	import vn.core.load.constant.LdStatus;
-	import vn.core.load.core.LdAudio;
-	import vn.core.load.core.LdQueue;
-	import vn.core.load.core.LdVars;
-	import vn.core.load.core.LdVideo;
-	import vn.core.load.utils.loadURL;
+	import vn.load.core.LdQueue;
+	import vn.load.plugins.LdAudio;
 	/**
 	 * ...
 	 * @author 
@@ -49,8 +45,7 @@ package test
 					//.configAudio()
 					//.on_ERROR(trace, ['ldAudio :: ERROR'])
 					.on_COMPLETED(function():void {
-						var cl : LdAudio = _queue.currentLoader as LdAudio;
-						trace('ldAudio COMPLETE : ', cl.duration, cl.id3);
+						trace(_queue.currentLoader.audioVars.duration);
 						//for (var s: String in cl.id3) {
 							//trace(s+':'+cl.id3[s]);
 						//}
@@ -63,7 +58,7 @@ package test
 					//.on_PROGRESS(trace, ['PROGRESS'])
 					//.on_INFO(trace, ['INFO'])
 					.on_COMPLETED(function(): void {
-						trace('ldVideo COMPLETE : ', (_queue.currentLoader as LdVideo).metaData);
+						trace('ldVideo COMPLETE : ', _queue.currentLoader.videoVars.metaData);
 					});
 		}
 		

@@ -1,4 +1,4 @@
-package vn.core.load.core 
+package vn.load.plugins 
 {
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
@@ -13,21 +13,17 @@ package vn.core.load.core
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.utils.getQualifiedClassName;
-	import vn.core.load.constant.LdType;
-	import vn.core.load.core.LdBase;
+	import vn.load.constant.LdType;
+	import vn.load.core.LdBase;
+	import vn.load.vars.LdGraphicVars;
+	import vn.load.vars.LdVars;
 	/**
 	 * ...
 	 * @author 
 	 */
 	public class LdGraphic extends LdBase
 	{
-		public var loader		: Loader;
-		public var context		: LoaderContext;
-		public var smoothBitmap	: Boolean;
-		
-		public function LdGraphic() {
-			
-		}
+		protected var _vars : LdGraphicVars = new LdGraphicVars();
 		
 		//override public function startLoad(url:String, userData:Object = null):void 
 		//{
@@ -83,8 +79,14 @@ package vn.core.load.core
 		
 		override protected function _startLoad():void 
 		{
-			loader = new Loader();
-			var li : LoaderInfo = loader.contentLoaderInfo;
+			if (!_config.request) _config.request = new URLRequest(_config.url);
+			var context : LoaderContext = _vars.context;
+			context.applicationDomain	= _config.appDomain;
+			context.checkPolicyFile		= _config.checkPolicy;
+			context.securityDomain		= _config.secuDomain;
+			
+			_vars.loader = new Loader();
+			var li : LoaderInfo = _vars.loader.contentLoaderInfo;
 				
 			li.addEventListener(Event.COMPLETE,						_onComplete);
 			li.addEventListener(ProgressEvent.PROGRESS, 			_onProgress);
@@ -94,13 +96,13 @@ package vn.core.load.core
 			li.addEventListener(Event.INIT,							_onInfo);
 			li.addEventListener(Event.OPEN,							_onInfo);
 			
-			loader.load(new URLRequest(url), context);
+			_vars.loader.load(_config.request, context);
 		}
 		
 		override protected function _stopLoad():void 
 		{
-			if (loader) {
-				var li : LoaderInfo = loader.contentLoaderInfo;
+			if (_vars.loader) {
+				var li : LoaderInfo = _vars.loader.contentLoaderInfo;
 				li.removeEventListener(Event.COMPLETE,						_onComplete);
 				li.removeEventListener(ProgressEvent.PROGRESS, 				_onProgress);
 				li.removeEventListener(IOErrorEvent.IO_ERROR,				_onError);			
@@ -109,26 +111,27 @@ package vn.core.load.core
 				li.removeEventListener(Event.INIT,							_onInfo);
 				li.removeEventListener(Event.OPEN,							_onInfo);
 				
-				try { loader['unloadAndStop'](); } catch (e: Error) { }//flash 10 only
-				try { loader.close(); } catch (e: Error) { }
-				if (_loadedContent) try { loader.unload() } catch (e: Error) { };
-				
-				loader = null;
-				context = null;//TODO : consider adding default loader context
+				try { _vars.loader['unloadAndStop'](); } catch (e: Error) { }//flash 10 only
+				try { _vars.loader.close(); } catch (e: Error) { }
+				if (_vars.loadedContent) try { _vars.loader.unload() } catch (e: Error) { };
+				_vars.loader = null;
 			}
 			
-			_loadedContent = null; //content can be non-null (cached) while loader is null
+			_vars.loadedContent = null; //content can be non-null (cached) while loader is null
 		}
 		
 		override protected function _onComplete(e:Event):void 
 		{
 			if (e) {
-				_loadedContent = (e.currentTarget as LoaderInfo).loader.content;
+				_vars.loadedContent = (e.currentTarget as LoaderInfo).loader.content;
 				//TODO : check against security issues while retrieving .content from loader
-				if (smoothBitmap && _loadedContent is Bitmap) (_loadedContent as Bitmap).smoothing = true;
+				if (_config.smoothBitmap && _vars.loadedContent is Bitmap) (_vars.loadedContent as Bitmap).smoothing = true;
 			}
 			super._onComplete(e);
 		}
+		
+		override public function get vars():LdVars { return _vars; }
+		
 		override public function get type():String { return LdType.GRAPHIC; }
 		override public function get extension():String { return '.jpg|.png|.gif|.swf' }
 	}

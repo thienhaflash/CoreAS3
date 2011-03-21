@@ -1,4 +1,4 @@
-package vn.core.load.core 
+package vn.load.core 
 {
 	import flash.events.Event;
 	import flash.net.URLLoader;
@@ -6,10 +6,14 @@ package vn.core.load.core
 	import flash.utils.Dictionary;
 	import vn.core.event.Dispatcher;
 	import vn.core.event.EnterFrame;
-	import vn.core.load.constant.LdPriority;
-	import vn.core.load.constant.LdStatus;
-	import vn.core.load.constant.LdType;
-	import vn.core.load.LdEvent;
+	import vn.load.constant.LdPriority;
+	import vn.load.constant.LdStatus;
+	import vn.load.constant.LdType;
+	import vn.load.LdEvent;
+	import vn.load.plugins.LdAudio;
+	import vn.load.plugins.LdData;
+	import vn.load.plugins.LdGraphic;
+	import vn.load.plugins.LdVideo;
 	/**
 	 * ...
 	 * @author 
@@ -18,29 +22,16 @@ package vn.core.load.core
 	{
 		public static var allQueues		: Dictionary	= new Dictionary();
 		
-		protected var _id				: * ;
-		protected var _dict				: Dictionary;	/* <url|id> --> LdVars */
-		protected var _queue			: Array;		/* of LdVars */
+		protected var _dict				: Dictionary;	/* <url|id> --> LdConfig */
+		protected var _queue			: Array;		/* of LdConfig */
 		protected var _extensions		: Object;		/* extension to Loader */
-		protected var _dispatcher		: Dispatcher;	
-		
-		protected var _status			: String; /* queue status */
-		protected var _currentItem		: LdVars; /* loading item */
-		protected var _currentLoader	: LdBase; /* the loadler used to load currentItem */
-		
-		public function get currentItem() :LdVars { return _currentItem; }	
-		public function get currentLoader()	:LdBase { return _currentLoader; }	
-		public function get id() :* { return _id; }
-		public function get dispatcher():Dispatcher { return _dispatcher; }
-		
-		public function get status():String { return _status; }
 		
 		public function LdQueue(queueId: *) {
 			_id = queueId;
 			allQueues[queueId] = this;
 			_extensions = { };
 			_dict	= new Dictionary();
-			_dispatcher = new Dispatcher();
+			_dispatcher = new Dispatcher(new LdEvent(this));
 			
 			_queue	= [];
 			
@@ -65,6 +56,24 @@ package vn.core.load.core
 		}
 		
 	/********************
+	 * 		GETTERS
+	 *******************/	
+		
+		protected var _id				: * ;
+		protected var _dispatcher		: Dispatcher;	
+		
+		protected var _status			: String; /* queue status */
+		protected var _currentConfig	: LdConfig; /* loading item */
+		protected var _currentLoader	: LdBase; /* the loadler used to load currentItem */
+		
+		public function get id():* { return _id; }
+		public function get dispatcher():Dispatcher { return _dispatcher; }
+		
+		public function get status():String { return _status; }
+		public function get currentConfig():LdConfig { return _currentConfig; }	
+		public function get currentLoader():LdBase { return _currentLoader; }	
+		
+	/********************
 	 * 		API
 	 *******************/
 		
@@ -85,7 +94,7 @@ package vn.core.load.core
 			_extensions[ld.type] = ld;
 		}
 		
-		public function add(data: LdVars , priority: String = LdPriority.QUEUE_FIRST, autoResume: Boolean = true): LdVars {
+		public function add(data: LdConfig , priority: String = LdPriority.QUEUE_FIRST, autoResume: Boolean = true): LdConfig {
 			if (!data) { trace('trying to load a null URL'); return data; }
 			
 			if (data.url == null) data.url = data.request.url; //user used a request !
@@ -111,11 +120,11 @@ package vn.core.load.core
 			return data;
 		}
 		
-		public function get(url : String, id: String = null, autoNew : Boolean = false): LdVars {
-			var ldi : LdVars = (id && _dict[id]) ? _dict[id] : _dict[url]; //try to overwrite same id first, if not existed, use URL
+		public function get(url : String, id: String = null, autoNew : Boolean = false): LdConfig {
+			var ldi : LdConfig = (id && _dict[id]) ? _dict[id] : _dict[url]; //try to overwrite same id first, if not existed, use URL
 			
 			if (autoNew && !ldi) {//not yet exist, create new !
-				ldi = new LdVars(url, id);
+				ldi = new LdConfig(url, id);
 				_dict[url] = ldi;
 				if (id) _dict[id] = ldi;
 			} else {
@@ -134,12 +143,12 @@ package vn.core.load.core
 			return ldi;
 		}
 		
-		public function addURL(url: String, id: String = null): LdVars {
+		public function addURL(url: String, id: String = null): LdConfig {
 			return add(get(url, id, true));
 		}
 		
 		public function remove(idOrURL: String): void {
-			var ldi : LdVars = _dict[idOrURL];
+			var ldi : LdConfig = _dict[idOrURL];
 			if (ldi) {//TODO : consider if there are a better way to reuse this ldi
 				delete _dict[ldi.id];
 				delete _dict[ldi.url];
@@ -152,7 +161,7 @@ package vn.core.load.core
 		public function empty(): LdQueue {
 			_dict			= new Dictionary();
 			_queue			= [];
-			_currentItem	= null;
+			_currentConfig	= null;
 			setStatus(LdStatus.QUEUE_IDLE);
 			return this;
 		}
@@ -181,21 +190,21 @@ package vn.core.load.core
 			if (check && _status == LdStatus.QUEUE_RUNNING) return; //skip if it's loading now
 			
 			var l : int		= _queue.length;
-			_currentItem	= null;
+			_currentConfig	= null;
 			while (--l >= 0) {
-				_currentItem = _queue.shift();
-				if (_currentItem && _currentItem.url) break; //a valid item found !
+				_currentConfig = _queue.shift();
+				if (_currentConfig && _currentConfig.url) break; //a valid item found !
 			}
 			
-			if (_currentItem) {
-				if (_currentItem.type == LdType.UNKNOWN) _currentItem.type = getLd(_currentItem.url) ? getLd(_currentItem.url).type : LdType.UNKNOWN;
-				if (_currentItem.type != LdType.UNKNOWN) { //has Loader of the specified type
-					_currentLoader = _extensions[_currentItem.type];
-					_currentLoader.startLoad(_currentItem);
+			if (_currentConfig) {
+				if (_currentConfig.type == LdType.UNKNOWN) _currentConfig.type = getLd(_currentConfig.url) ? getLd(_currentConfig.url).type : LdType.UNKNOWN;
+				if (_currentConfig.type != LdType.UNKNOWN) { //has Loader of the specified type
+					_currentLoader = _extensions[_currentConfig.type];
+					_currentLoader.startLoad(_currentConfig);
 					setStatus(LdStatus.QUEUE_RUNNING);
 				} else { // file is unknown type
 					//TODO : SHOULD WE dispatch an error here ?
-					trace(_currentItem.url + ' is UNKNOWN type so it can not be loaded ');
+					trace(_currentConfig.url + ' is UNKNOWN type so it can not be loaded ');
 					loadNext(); //progress to next one
 				}
 			} else {
@@ -206,8 +215,8 @@ package vn.core.load.core
 		private function cancelCurrent(): void {
 			if (_currentLoader) {
 				_currentLoader.stopLoad();
-				_queue.unshift(_currentItem);
-				_currentItem	= null;
+				_queue.unshift(_currentConfig);
+				_currentConfig	= null;
 				_currentLoader	= null;
 			}
 		}

@@ -1,17 +1,19 @@
-package vn.core.load.core 
+package vn.load.core 
 {
 	/**
 	 * ...
 	 * @author 
 	 */
+	import flash.media.SoundLoaderContext;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.system.ApplicationDomain;
+	import flash.system.SecurityDomain;
 	import vn.core.event.Dispatcher;
-	import vn.core.load.constant.LdType;
-	import vn.core.load.LdEvent;
+	import vn.load.constant.LdType;
+	import vn.load.LdEvent;
 
-	public class LdVars {
+	public class LdConfig {
 		public var type			: String;
 		public var id			: String;
 		public var url			: String;
@@ -21,28 +23,29 @@ package vn.core.load.core
 		public var stopAt		: Number; //!= null means preload
 		
 		/* config data */
-		internal var data			: * ;
-		internal var contentType	: String;
-		internal var method			: String;
+		public var sendData		: * ;
+		public var contentType	: String;
+		public var method		: String;
 		
 		/* config video */
-		internal var bufferTime		: Number;
-		internal var attachVideo	: Boolean;
-		internal var useNetStatus	: Boolean;
-		internal var waitForMeta	: Boolean;
-		internal var pauseAtStart	: Boolean;
+		public var bufferTime	: Number;
+		public var attachVideo	: Boolean;
+		public var useNetStatus	: Boolean;
+		public var waitForMeta	: Boolean;
+		public var pauseAtStart	: Boolean;
 		
 		/* config audio */
-		internal var duration		: Number;
-		internal var checkPolicy	: Boolean;
+		public var duration		: Number;
+		public var checkPolicy	: Boolean;
 		
 		/* config graphic */
-		internal var smoothBitmap	: Boolean;
-		internal var appDomain		: ApplicationDomain;
+		public var smoothBitmap	: Boolean;
+		public var appDomain	: ApplicationDomain;
+		public var secuDomain	: SecurityDomain;
 		
 		//clone from the default configurator here !
 		
-		public function LdVars(url: String, id: String = null) {
+		public function LdConfig(url: String, id: String = null) {
 			this.url	= url;
 			this.id		= id;
 			this.type	= LdType.UNKNOWN;
@@ -55,27 +58,27 @@ package vn.core.load.core
 		
 		public var dispatcher	: Dispatcher;
 		
-		public function on_STARTED(handler: Function, params: Array = null): LdVars {
+		public function on_STARTED(handler: Function, params: Array = null): LdConfig {
 			dispatcher.addCallback(LdEvent.ITEM_START, handler, params);
 			return this;
 		}
 		
-		public function on_PROGRESS(handler: Function, params: Array = null): LdVars {
+		public function on_PROGRESS(handler: Function, params: Array = null): LdConfig {
 			dispatcher.addCallback(LdEvent.ITEM_PROGRESS, handler, params);
 			return this;
 		}
 		
-		public function on_INFO(handler: Function, params: Array = null): LdVars {
+		public function on_INFO(handler: Function, params: Array = null): LdConfig {
 			dispatcher.addCallback(LdEvent.ITEM_INFO, handler, params);
 			return this;
 		}
 		
-		public function on_COMPLETED(handler: Function, params: Array = null): LdVars {
+		public function on_COMPLETED(handler: Function, params: Array = null): LdConfig {
 			dispatcher.addCallback(LdEvent.ITEM_COMPLETE, handler, params);
 			return this;
 		}
 		
-		public function on_ERROR(handler: Function, params: Array = null): LdVars {
+		public function on_ERROR(handler: Function, params: Array = null): LdConfig {
 			dispatcher.addCallback(LdEvent.ITEM_ERROR, handler, params);
 			return this;
 		}
@@ -84,15 +87,15 @@ package vn.core.load.core
 	 * 		CONFIGURATORS
 	 ***************************/
 		
-		public function configData(byteArrayOrObject : * = null, contentType: String = null, method: String = null): LdVars {
-			this.data			= byteArrayOrObject;
+		public function configData(byteArrayOrObject : * = null, contentType: String = null, method: String = null): LdConfig {
+			this.sendData		= byteArrayOrObject;
 			this.contentType	= contentType;
 			this.method			= method ? method : URLRequestMethod.POST;
 			this.type			= LdType.DATA;
 			return this;
 		}
 		
-		public function configVideo(bufferTime: Number = 1, duration: Number = 0, useNetStatus: Boolean = true, checkPolicy : Boolean = true, pauseAtStart: Boolean = true, attachVideo: Boolean = false, waitForMeta: Boolean = true): LdVars {
+		public function configVideo(bufferTime: Number = 1, duration: Number = 0, useNetStatus: Boolean = true, checkPolicy : Boolean = true, pauseAtStart: Boolean = true, attachVideo: Boolean = false, waitForMeta: Boolean = true): LdConfig {
 			this.bufferTime		= bufferTime;
 			this.attachVideo	= attachVideo;
 			this.waitForMeta	= waitForMeta;
@@ -104,25 +107,25 @@ package vn.core.load.core
 			return this;
 		}
 		
-		public function configAudio(bufferTime: Number = 10, duration: Number = 0, checkPolicy: Boolean = true): LdVars {
+		public function configAudio(bufferTime: Number = 10, duration: Number = 0, checkPolicy: Boolean = true): LdConfig {
 			this.bufferTime		= bufferTime;
 			this.duration		= duration;
 			this.checkPolicy	= checkPolicy;
 			this.type			= LdType.AUDIO;
-			
 			return this;
 		}
 		
-		public function configGraphic(smoothBitmap:Boolean = true, checkPolicy: Boolean = true, appDomain: ApplicationDomain = null): LdVars {
+		public function configGraphic(smoothBitmap:Boolean = true, checkPolicy: Boolean = true, appDomain: ApplicationDomain = null, secuDomain: SecurityDomain = null): LdConfig {
 			this.smoothBitmap	= smoothBitmap;
 			this.checkPolicy	= checkPolicy;
 			this.appDomain		= appDomain ? appDomain : ApplicationDomain.currentDomain;
+			this.secuDomain		= secuDomain;
 			this.type			= LdType.GRAPHIC;
 			return this;
 		}
 		
 		public function toString(): String {
-			return '[LdVars type=' + type + ' url=' + url + ']';
+			return '[LdConfig type=' + type + ' url=' + url + ']';
 		}
 	}
 

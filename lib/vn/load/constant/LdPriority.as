@@ -1,4 +1,4 @@
-package vn.core.load.constant 
+package vn.load.constant 
 {
 	/**
 	 * ...
