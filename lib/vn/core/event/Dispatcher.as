@@ -8,7 +8,7 @@ package vn.core.event
 	 * 
 	 * @author	thienhaflash (thienhaflash@gmail.com)
 	 * @version 0.1.0
-	 * @updated	12 March 2011
+	 * @updated	21 March 2011
 	 * @features
 	 * 		Support both Listeners (call handler with eventObject) and Callbacks (call handler with params)
 	 * 		Support priority with LOW (<0) and HIGH (>0) or NORMAL (=0, default)

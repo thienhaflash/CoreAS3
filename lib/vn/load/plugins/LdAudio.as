@@ -13,8 +13,12 @@ package vn.load.plugins
 	import vn.load.vars.LdAudioVars;
 	import vn.load.vars.LdVars;
 	/**
-	 * ...
-	 * @author 
+	 * LdAudio plugin : use to load audio files
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdAudio extends LdBase
 	{

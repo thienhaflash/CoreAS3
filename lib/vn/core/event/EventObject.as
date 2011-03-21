@@ -1,8 +1,14 @@
 package vn.core.event 
 {
 	/**
-	 * ...
-	 * @author thienhaflash
+	 * Base EventObject used with Dispatcher
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * @features
+	 * 		Support userdata, source, dispatcher, type and phase
+	 * 
 	 */
 	public class EventObject 
 	{

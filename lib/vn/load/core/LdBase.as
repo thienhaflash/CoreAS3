@@ -6,15 +6,18 @@ package vn.load.core
 	import vn.load.constant.LdStatus;
 	import vn.load.constant.LdType;
 	import vn.load.core.LdConfig;
-	import vn.load.LdEvent;
 	import vn.load.vars.LdAudioVars;
 	import vn.load.vars.LdDataVars;
 	import vn.load.vars.LdGraphicVars;
 	import vn.load.vars.LdVars;
 	import vn.load.vars.LdVideoVars;
 	/**
-	 * ...
-	 * @author 
+	 * Base class for all Loader plugins
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdBase 
 	{

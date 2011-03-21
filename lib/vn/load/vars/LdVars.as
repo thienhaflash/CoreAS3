@@ -6,8 +6,12 @@ package vn.load.vars
 	import vn.load.core.LdConfig;
 	import vn.load.core.LdQueue;
 	/**
-	 * ...
-	 * @author 
+	 * base class for all loader plugin vars
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdVars 
 	{

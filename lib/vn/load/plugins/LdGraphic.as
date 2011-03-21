@@ -18,8 +18,12 @@ package vn.load.plugins
 	import vn.load.vars.LdGraphicVars;
 	import vn.load.vars.LdVars;
 	/**
-	 * ...
-	 * @author 
+	 * LdGraphic plugin : use to load graphic files like images and swfs
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdGraphic extends LdBase
 	{

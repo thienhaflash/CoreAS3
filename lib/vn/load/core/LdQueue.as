@@ -9,14 +9,21 @@ package vn.load.core
 	import vn.load.constant.LdPriority;
 	import vn.load.constant.LdStatus;
 	import vn.load.constant.LdType;
-	import vn.load.LdEvent;
 	import vn.load.plugins.LdAudio;
 	import vn.load.plugins.LdData;
 	import vn.load.plugins.LdGraphic;
 	import vn.load.plugins.LdVideo;
 	/**
-	 * ...
-	 * @author 
+	 * LoaderQueue to manage asset loading with plugin architecture
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * @features
+	 * 		Support Dispatcher and shortHand
+	 * 		Support add / remove / pause / resume / empty functions
+	 * 		Plugin architecture that we can add new Loader types anytime
+	 * 
 	 */
 	public class LdQueue 
 	{

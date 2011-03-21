@@ -1,8 +1,12 @@
 package vn.load.core 
 {
 	/**
-	 * ...
-	 * @author 
+	 * LdConfig save loading items config and listeners to be used later on by loader plugins
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	import flash.media.SoundLoaderContext;
 	import flash.net.URLRequest;
@@ -11,7 +15,6 @@ package vn.load.core
 	import flash.system.SecurityDomain;
 	import vn.core.event.Dispatcher;
 	import vn.load.constant.LdType;
-	import vn.load.LdEvent;
 
 	public class LdConfig {
 		public var type			: String;

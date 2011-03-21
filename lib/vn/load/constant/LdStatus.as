@@ -1,8 +1,12 @@
 package vn.load.constant 
 {
 	/**
-	 * ...
-	 * @author 
+	 * Loader and queue status used by LdQueue and LdBase
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdStatus {
 		public static const ITEM_QUEUED		: String = 'ITEM_QUEUED';

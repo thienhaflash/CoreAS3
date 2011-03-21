@@ -1,8 +1,12 @@
 package vn.load.constant 
 {
 	/**
-	 * ...
-	 * @author 
+	 * Loader Priorities used when adding items into queue
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdPriority {
 		public static const ONLY_ME		: String = 'ONLY_ME'; /* stop all running items in all queues and start load me only */

@@ -1,8 +1,12 @@
 package vn.core.event 
 {
 	/**
-	 * ...
-	 * @author 
+	 * Interface for Dispatcher
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public interface IDispatcher 
 	{

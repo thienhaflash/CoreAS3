@@ -5,8 +5,12 @@ package vn.load.vars
 	import flash.net.NetStream;
 	import vn.load.constant.LdType;
 	/**
-	 * ...
-	 * @author 
+	 * LdVideoVars : variables used by LdVideo plugin used to ensure strong typing to end users
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdVideoVars extends LdVars
 	{

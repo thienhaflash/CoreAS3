@@ -15,8 +15,12 @@ package vn.load.plugins
 	import vn.load.vars.LdVars;
 	import vn.load.vars.LdVideoVars;
 	/**
-	 * ...
-	 * @author 
+	 * LdVideo plugin : use to load video files
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdVideo extends LdBase
 	{

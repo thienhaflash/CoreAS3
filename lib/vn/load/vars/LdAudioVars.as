@@ -6,8 +6,12 @@ package vn.load.vars
 	import flash.media.SoundLoaderContext;
 	import vn.load.constant.LdType;
 	/**
-	 * ...
-	 * @author 
+	 * LdAudioVars : variables used by LdAudio plugin and used to ensure strong typing to end users
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdAudioVars extends LdVars
 	{

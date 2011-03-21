@@ -1,8 +1,12 @@
 package vn.load.constant 
 {
 	/**
-	 * ...
-	 * @author 
+	 * Loader types constants to be used by LdQueue and LdBase
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdType {
 		public static const DATA	: String = 'DATA';

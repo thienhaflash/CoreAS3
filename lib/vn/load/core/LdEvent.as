@@ -1,4 +1,4 @@
-package vn.load 
+package vn.load.core 
 {
 	import vn.core.event.Dispatcher;
 	import vn.core.event.EventObject;
@@ -10,8 +10,12 @@ package vn.load
 	import vn.load.vars.LdVars;
 	import vn.load.vars.LdVideoVars;
 	/**
-	 * ...
-	 * @author 
+	 * EventObject used by all loader plugins and the LdQueue
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdEvent extends EventObject
 	{

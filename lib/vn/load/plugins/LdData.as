@@ -16,8 +16,12 @@ package vn.load.plugins
 	import vn.load.vars.LdDataVars;
 	import vn.load.vars.LdVars;
 	/**
-	 * ...
-	 * @author 
+	 * LdData plugin : use to send and load data
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * 
 	 */
 	public class LdData extends LdBase
 	{

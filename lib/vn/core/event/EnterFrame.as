@@ -4,8 +4,14 @@ package vn.core.event
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	/**
-	 * ...
-	 * @author thienhaflash
+	 * Global EnterFrame provider for better performance and short hand
+	 * 
+	 * @author	thienhaflash (thienhaflash@gmail.com)
+	 * @version 0.1.0
+	 * @updated	21 March 2011
+	 * @features
+	 * 		Support once listeners and each frame callbacks with parameters
+	 * 
 	 */
 	public class EnterFrame 
 	{
@@ -45,9 +51,6 @@ package vn.core.event
 				delete nextList[f];
 			}
 		}
-		
-		
-		
 	}
 
 }

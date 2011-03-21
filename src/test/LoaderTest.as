@@ -18,9 +18,9 @@ package test
 			ldAudio_test();
 			ldVideo_test();
 			
-			ldData_test();
-			ldAudio_test();
-			ldVideo_test();
+			//ldData_test();
+			//ldAudio_test();
+			//ldVideo_test();
 			
 		}
 		
@@ -35,7 +35,7 @@ package test
 			_queue.addURL('index.html')
 					.configData()
 					.on_COMPLETED(function(): void {
-						trace('ldData COMPLETE : ');
+						trace('ldData COMPLETE : '+ String(_queue.currentLoader.dataVars.loadedContent).length);
 						//trace('ldData COMPLETE : ', _queue.currentLoader.loadedContent);
 					});
 		}
@@ -45,7 +45,7 @@ package test
 					//.configAudio()
 					//.on_ERROR(trace, ['ldAudio :: ERROR'])
 					.on_COMPLETED(function():void {
-						trace(_queue.currentLoader.audioVars.duration);
+						trace('ldAudio COMPLETE : ', _queue.currentLoader.audioVars.duration);
 						//for (var s: String in cl.id3) {
 							//trace(s+':'+cl.id3[s]);
 						//}
