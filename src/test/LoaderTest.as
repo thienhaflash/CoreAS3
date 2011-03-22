@@ -3,8 +3,7 @@ package test
 	import flash.display.MovieClip;
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
-	import vn.load.core.LdQueue;
-	import vn.load.plugins.LdAudio;
+	import vn.core.load.core.LdQueue;
 	/**
 	 * ...
 	 * @author 
