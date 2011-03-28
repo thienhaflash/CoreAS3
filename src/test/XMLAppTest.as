@@ -1,6 +1,7 @@
 package test 
 {
 	import vn.core.app.XMLApp;
+	import vn.core.optimize.Buffer;
 	/**
 	 * ...
 	 * @author 
@@ -9,6 +10,7 @@ package test
 	{
 		public function XMLAppTest() 
 		{
+			var a : Buffer;
 			appConfigURL = 'assets/config.xml';
 		}
 		

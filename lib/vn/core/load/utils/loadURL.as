@@ -11,7 +11,7 @@ package vn.core.load.utils
 	 * @updated	21 March 2011
 	 * 
 	 */
-	public function loadURL(url : *, id: String = null, prioritize : String = LdPriority.QUEUE_FIRST, queue: String = 'main') : LdConfig
+	public function loadURL(url : *, id: String = null, prioritize : String = null, queue: String = 'main') : LdConfig
 	{
 		return LdQueue.getQueue(queue, true).addURL(url, id, prioritize);
 	}

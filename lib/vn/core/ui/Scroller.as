@@ -1,11 +1,10 @@
 package vn.core.ui 
 {
-	import ami.flash.Drag;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import vn.core.flash.Drag;
 	/**
 	 * ...
 	 * @author thienhaflash

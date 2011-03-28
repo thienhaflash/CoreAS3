@@ -127,8 +127,10 @@ package vn.core.load.core
 			_extensions[ld.type] = ld;
 		}
 		
-		public function add(data: LdConfig , priority: String = LdPriority.QUEUE_FIRST, autoResume: Boolean = true): LdConfig {
+		public function add(data: LdConfig , priority: String = null, autoResume: Boolean = true): LdConfig {
 			if (!data) { trace('trying to load a null URL'); return data; }
+			
+			if (priority == null) priority = LdPriority.QUEUE_FIRST;
 			
 			if (data.url == null) data.url = data.request.url; //user used a request !
 			data.queue = _id;

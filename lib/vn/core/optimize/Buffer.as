@@ -1,8 +1,6 @@
 package vn.core.optimize
 {
 	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
 	/**
 	 * Buffering used mainly for DisplayObject to boost performance and decrease memory required
 	 * 
@@ -144,7 +142,7 @@ package vn.core.optimize
 
 }
 
-import vn.optimize.Buffer;
+import vn.core.optimize.Buffer;
 
 class ArrayResizer {
 	

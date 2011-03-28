@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SWCProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <FlexBinPath />
-  <FlashBinPath />
+  <FlexBinPath>.\bin\CoreAS3.swc</FlexBinPath>
+  <FlashBinPath>.\bin\CoreAS3.flash.swc</FlashBinPath>
   <FlexIncludeASI>false</FlexIncludeASI>
   <MakeCS3>false</MakeCS3>
   <MakeMXI>false</MakeMXI>
   <IntegrateAsDoc>true</IntegrateAsDoc>
   <LaunchAEM>false</LaunchAEM>
   <MXPIncludeASI>false</MXPIncludeASI>
-  <Flex_IgnoreClasses />
+  <Flex_IgnoreClasses>
+    <string>src\main.as</string>
+    <string>src\test\xmlapptest.as</string>
+    <string>src\test\loadertest.as</string>
+    <string>src\test\dispatchertest.as</string>
+    <string>bin\_sload.as</string>
+  </Flex_IgnoreClasses>
   <CS3_IgnoreClasses />
   <CS3_PreviewType>None</CS3_PreviewType>
 </SWCProject>

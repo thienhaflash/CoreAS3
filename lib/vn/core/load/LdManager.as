@@ -1,7 +1,6 @@
 package vn.core.load 
 {
 	import flash.utils.Dictionary;
-	import vn.load.core.LdQueue;
 	/**
 	 * ...
 	 * @author 
