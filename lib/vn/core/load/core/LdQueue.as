@@ -4,8 +4,10 @@ package vn.core.load.core
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
+	import vn.core.Dependency;
 	import vn.core.event.Dispatcher;
 	import vn.core.event.EnterFrame;
+	import vn.core.event.IDispatcher;
 	import vn.core.load.constant.LdPriority;
 	import vn.core.load.constant.LdStatus;
 	import vn.core.load.constant.LdType;
@@ -48,7 +50,7 @@ package vn.core.load.core
 			allQueues[queueId] = this;
 			_extensions = { };
 			_dict	= new Dictionary();
-			_dispatcher = new Dispatcher(new LdEvent(this));
+			_dispatcher = Dependency.aNewDispatcher.injectEventObject(new LdEvent(this));
 			
 			_queue	= [];
 			
@@ -77,14 +79,14 @@ package vn.core.load.core
 	 *******************/	
 		
 		protected var _id				: * ;
-		protected var _dispatcher		: Dispatcher;	
+		protected var _dispatcher		: IDispatcher;	
 		
 		protected var _status			: String; /* queue status */
 		protected var _currentConfig	: LdConfig; /* loading item */
 		protected var _currentLoader	: LdBase; /* the loadler used to load currentItem */
 		
 		public function get id():* { return _id; }
-		public function get dispatcher():Dispatcher { return _dispatcher; }
+		public function get dispatcher():IDispatcher { return _dispatcher; }
 		
 		public function get status():String { return _status; }
 		public function get currentConfig():LdConfig { return _currentConfig; }	

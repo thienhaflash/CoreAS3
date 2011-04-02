@@ -29,6 +29,7 @@
     </library-path>
   </compiler>
   <include-classes>
+    <class>vn.core.Dependency</class>
     <class>vn.core.app.XMLApp</class>
     <class>vn.core.data.VOData</class>
     <class>vn.core.event.Dispatcher</class>

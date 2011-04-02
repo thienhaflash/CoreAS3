@@ -31,13 +31,15 @@ package vn.core.event
 		protected var _eventStores	: Object; //save references to AEventStore, each one a type
 		protected var _eventObject	: EventObject; // the only one eventObject : no recursive dispatch allowed
 		
-		public function Dispatcher(eventObj: EventObject = null) {
+		public function Dispatcher() {
 			_eventStores = { };
-			if (!_eventObject) {
-				_eventObject = new EventObject(this, this); 
-			} else {
-				_eventObject.dispatcher = this;
-			}
+			_eventObject = new EventObject(this, this);
+		}
+		
+		public function injectEventObject(eventObj: EventObject): IDispatcher {
+			_eventObject = eventObj;
+			_eventObject.dispatcher = this;
+			return this;
 		}
 		
 	/*************************

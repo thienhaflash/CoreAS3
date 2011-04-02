@@ -31,7 +31,7 @@ package vn.core.event
 		
 		function numListenerOrCallback(type: String): int;
 		
-		
+		function injectEventObject(eventObj: EventObject): IDispatcher;
 		function get eventObject():EventObject;
 		function get isDispatching():Boolean;
 	}

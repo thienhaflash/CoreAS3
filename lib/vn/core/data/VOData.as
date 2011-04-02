@@ -11,13 +11,13 @@ package vn.core.data
 	{
 		protected var _info 		: Dictionary;
 		protected var _map			: Object;
-		protected var _ignoreFirst	: Boolean;
+		protected var _ignoreEmpty	: Boolean;
 		
-		public function VOData(ignoreFirst : Boolean = true) 
+		public function VOData(ignoreEmpty : Boolean = true) 
 		{
 			_info			= new Dictionary();
 			_map			= { };
-			_ignoreFirst	= ignoreFirst;
+			_ignoreEmpty	= ignoreEmpty;
 		}
 		
 		public function addVOClass(nodeName: String, voClass: Class): VOData { /* consider support nodeLevel & map Injection */
@@ -31,12 +31,6 @@ package vn.core.data
 		}
 		
 		protected function addVO(xml: XML, parentId: String, index: int, level: int): * {
-			//TODO : replace ignoreFirst with ignore Empty :: if (hasChildren && no properties) useVOEmpty();
-			var cls		: Class		= (level == 0 && _ignoreFirst) ? VOEmpty : _map[String(xml.name())];
-			var vo		: *			= new cls();
-			var voi		: VOInfo	= new VOInfo(parentId, index, level);
-			var des		: XML		= describeType(vo);
-			
 			var atts	: XMLList	= xml.attributes();
 			var childs	: XMLList	= xml.children();	
 			var l1		: int		= atts.length();
@@ -48,10 +42,17 @@ package vn.core.data
 				if (_map[s]) cnn = s;
 			}
 			
-			if (l1 > 0 || des..variable.length() == 0) {//use Atrributes (might only be empty ? if )
+			var others	: XMLList 	= childs.(name() != cnn);
+			
+			var cls		: Class		= (l1 == 0 && (others.length() == 0) && _ignoreEmpty) ? VOEmpty : _map[String(xml.name())];
+			var vo		: *			= new cls();
+			var voi		: VOInfo	= new VOInfo(parentId, index, level);
+			var des		: XML		= describeType(vo);
+			
+			if (l1 > 0) {
 				dataCast(vo, atts, des);
-			} else if (l2 > 0) {//var d : XMLList = xml.name
-				dataCast(vo, childs.(name() != cnn), des);
+			} else if (l2 > 0) {
+				dataCast(vo, others, des);
 			}
 			
 			_info[vo]		= voi;
