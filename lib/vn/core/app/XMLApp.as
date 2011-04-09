@@ -43,6 +43,8 @@ package vn.core.app
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
+		public function get appConfigXML(): XML { return appConfig.xmlData; }
+		
 		protected function onAddedToStage(e: Event = null): void {
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			stage.scaleMode	= StageScaleMode.NO_SCALE;
@@ -136,8 +138,10 @@ class AppConfig {
 	public var allowCache	: Boolean;
 	public var assetURL		: Object; /* asset id to data url */
 	public var baseURL		: String;
+	public var xmlData		: XML;
 	
 	public function AppConfig(xml: XML = null) {
+		xmlData = xml;
 		assetURL = { };
 		
 		if (xml) {
