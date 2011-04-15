@@ -26,7 +26,7 @@ package vn.core.flash
 			return (a32 * abc + a2 * b * (abc - c2) + (4 * c * a - b * b) * Math.log((2 * a2 + ba + abc) / (ba + c2))) / (4 * a32);
 		}
 		
-		function intersection(p1:Point, p2:Point, p3:Point, p4:Point):Point {
+		/*function intersection(p1:Point, p2:Point, p3:Point, p4:Point):Point {
 var x1:Number = p1.x, x2:Number = p2.x, x3:Number = p3.x, x4:Number = p4.x;
 var y1:Number = p1.y, y2:Number = p2.y, y3:Number = p3.y, y4:Number = p4.y;
 var z1:Number= (x1 -x2), z2:Number = (x3 - x4), z3:Number = (y1 - y2), z4:Number = (y3 - y4);
@@ -48,7 +48,7 @@ y < Math.min(y3, y4) || y > Math.max(y3, y4) ) return null;
  
 // Return the point of intersection
 return new Point(x, y);
-}
+}*/
 		
 		
 		public static function getLineSegmentIntersect(A:Point, B:Point, C:Point, D:Point): Point {

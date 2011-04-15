@@ -33,11 +33,14 @@
     <class>vn.core.app.XMLApp</class>
     <class>vn.core.data.ArrayResizer</class>
     <class>vn.core.data.VOData</class>
+    <class>vn.core.draw.Draw</class>
+    <class>vn.core.draw.IDraw</class>
     <class>vn.core.event.Dispatcher</class>
     <class>vn.core.event.EnterFrame</class>
     <class>vn.core.event.EventObject</class>
     <class>vn.core.event.IDispatcher</class>
     <class>vn.core.flash.Drag</class>
+    <class>vn.core.flash.Math2</class>
     <class>vn.core.load.LdManager</class>
     <class>vn.core.load.constant.LdPriority</class>
     <class>vn.core.load.constant.LdStatus</class>

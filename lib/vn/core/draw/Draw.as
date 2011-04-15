@@ -120,20 +120,20 @@ package vn.core.draw
 			var l	: Number = Math2.getCurveLength(sx, sy, cx, cy, ex, ey);
 			var n	: int = l / (_dash + _space);
 			
-			var mx	: Number = cx + (ex - cx) * i / n;
+			var mx	: Number;//= cx + (ex - cx) * i / n;
 			var my	: Number;
 			
 			
-			for (var i: int = 0 ; i < n + 1; i++) {
-				mx = sx + (cx - sx) * t;
-				my = sy + (cy - sy) * t;
-				
-				g.moveTo(sx, sy);
-				g.curveTo(cx + (ex-cx)*t, cy + (ey-cy)*t, );
-				
-				
-				
-			}
+			//for (var i: int = 0 ; i < n + 1; i++) {
+				//mx = sx + (cx - sx) * t;
+				//my = sy + (cy - sy) * t;
+				//
+				//g.moveTo(sx, sy);
+				//g.curveTo(cx + (ex-cx)*t, cy + (ey-cy)*t, );
+				//
+				//
+				//
+			//}
 		}
 		
 	/**************************

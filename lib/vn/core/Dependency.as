@@ -2,6 +2,7 @@ package vn.core
 {
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	import vn.core.event.IDispatcher;
 	/**
 	 * ...
@@ -16,20 +17,19 @@ package vn.core
 		
 		private static var dict		: Dictionary = new Dictionary(); // name to class
 		
-		public static function getAnInstance(className: String): * {
-			var cls : Class = getClass(className);
+		public static function getAnInstance(src : * ): * {
+			var cls : Class = getClass(src);
 			return new cls();
 		}
 		
-		public static function getClass(className: String): Class {
-			var cls : Class = dict[className];
-			if (!cls) {
-				cls = getDefinitionByName(className) as Class;
-				if (cls) dict[className] = cls;
-			}
-			return cls;
+		public static function getClass(src : * ): Class {
+			if (src is String) return getDefinitionByName(src) as Class;
+			return getDefinitionByName(getQualifiedClassName(src)) as Class;
 		}
 		
+		public static function getClassName(sample: Object): String {
+			return getQualifiedClassName(sample);
+		}
 		
 		public static function get aNewDispatcher(): IDispatcher {
 			return getAnInstance(CLASS_Dispatcher);

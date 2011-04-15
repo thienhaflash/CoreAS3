@@ -129,9 +129,11 @@ package vn.core.optimize
 			_last = Math.min(_first + _nItems - 1, _total - 1);
 			
 			//keep indexing clean
-			for (var i: int = 0; i < _nItems; i++) {
-				_mapIdx[_items[(_first + i) % _nItems]] = first + i;
-			}
+			//for (var i: int = 0; i < _nItems; i++) {
+				//_mapIdx[_items[(_first + i) % _nItems]] = first + i;
+			//}
+			
+			updateContent( -1, _nItems);
 		}
 		
 		public function get last():int { return _last; }
