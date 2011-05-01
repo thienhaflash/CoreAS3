@@ -3,6 +3,7 @@ package vn.core.event
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import vn.core.Dependency;
 	/**
 	 * A better AS3 Event system - fast, stable and full features
 	 * 
@@ -28,17 +29,16 @@ package vn.core.event
 		
 	public class Dispatcher implements IDispatcher
 	{
-		protected var _eventStores	: Object; //save references to AEventStore, each one a type
-		protected var _eventObject	: EventObject; // the only one eventObject : no recursive dispatch allowed
+		protected var _eventStores		: Object; //save references to AEventStore, each one a type
+		protected var _eventObjectClass : Class;
 		
 		public function Dispatcher() {
+			_eventObjectClass = EventObject;
 			_eventStores = { };
-			_eventObject = new EventObject(this, this);
 		}
 		
-		public function injectEventObject(eventObj: EventObject): IDispatcher {
-			_eventObject = eventObj;
-			_eventObject.dispatcher = this;
+		public function injectEventObjectClass(eventObjectClass : Class = null): IDispatcher {
+			if (eventObjectClass) _eventObjectClass = eventObjectClass;
 			return this;
 		}
 		
@@ -74,29 +74,17 @@ package vn.core.event
 			_eventStores = { };
 		}
 		
-		public function get eventObject():EventObject { return _eventObject; }
-		
-		public function get isDispatching():Boolean { return _isDispatching; }
-		
 	/*************************
 	 * 		INTERNAL
 	 ************************/	
 		
-		protected var _isDispatching	: Boolean;
-		protected var _tmpAES			: AEventStore; /* temporary use by dispatch only */
+		private var _eventObject	: EventObject;
+		private var _tmpAES			: AEventStore;
 		
-		public function dispatch(type: String, phase: int = 0 ): void {
-			if (_isDispatching) {
-				trace('recursive dispatches not allowed !');
-				return;
-			} else {
-				_isDispatching = true;
-				_eventObject.type	= type;
-				_eventObject.phase	= phase;
-				_tmpAES = _eventStores[type];
-				if (_tmpAES) _tmpAES.listeners.forEach(informAListener);
-				_isDispatching = false;
-			}
+		public function dispatch(type: String): void {
+			_eventObject = new _eventObjectClass(type);
+			_tmpAES = _eventStores[type];
+			if (_tmpAES) _tmpAES.listeners.forEach(informAListener);
 		}
 		
 		private function informAListener(alsn: AListener, idx: int, arr: Array):void 
@@ -150,6 +138,8 @@ package vn.core.event
 							);
 			}
 		}
+		
+		
 	}
 }
 

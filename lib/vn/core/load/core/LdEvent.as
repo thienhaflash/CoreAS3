@@ -31,8 +31,8 @@ package vn.core.load.core
 		
 		public var vars		: LdVars;
 		
-		public function LdEvent(source: Object) {
-			super(source);
+		public function LdEvent(type: String) {
+			super(type);
 		}
 		
 		public function get audioVars(): LdAudioVars {

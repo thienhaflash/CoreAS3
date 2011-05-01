@@ -50,8 +50,7 @@ package vn.core.load.core
 			allQueues[queueId] = this;
 			_extensions = { };
 			_dict	= new Dictionary();
-			_dispatcher = Dependency.aNewDispatcher.injectEventObject(new LdEvent(this));
-			
+			_dispatcher = Dependency.aNewDispatcher.injectEventObjectClass(LdEvent);
 			_queue	= [];
 			
 			addLoader(new LdGraphic());

@@ -1,3 +1,8 @@
+Note on Dispatcher : can not use only 1 EventObject ! there are case when something changes 
+trigger changes of some other things in the same component (use the same dispatcher)
+Copy props into a temp EventObject won't solve the problem.
+Pooling might be an option to consider !
+
 Create a supplemental independent functionalities for AS3 Flash
 
 +	Queue(use nullized Array ?)
@@ -8,8 +13,6 @@ Create a supplemental independent functionalities for AS3 Flash
 +	DrawingAPI (dashedline, ...)
 +	VisualObject - Masked, LimitedStates
 +	Optimizers	- Buffer, ObjectPool, Thread, ObjectCache
-
-+	Components - Tree, DataGrid, Tab
 
 Loader syntax :
 

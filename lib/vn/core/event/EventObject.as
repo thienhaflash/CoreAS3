@@ -1,5 +1,6 @@
 package vn.core.event 
 {
+	import flash.events.Event;
 	/**
 	 * Base EventObject used with Dispatcher
 	 * 
@@ -10,18 +11,15 @@ package vn.core.event
 	 * 		Support userdata, source, dispatcher, type and phase
 	 * 
 	 */
-	public class EventObject 
+	public class EventObject extends Event
 	{
-		public var phase		: int;		//for multiple phase Event like Drag-Move-Drop
-		public var type			: String;	//even name
-		
 		public var dispatcher	: IDispatcher;	//so user won't need to cast or use Object lookup
 		public var source 		: Object;		//the one who tell dispatcher to dispatch
 		public var userData		: Object;		//user attached data
 		
-		public function EventObject(source: Object, dispatcher: IDispatcher = null) {
-			this.source		= source;
-			this.dispatcher = dispatcher;
+		public function EventObject(type: String, cancelable : Boolean = false ) {
+			super(type, false, cancelable);
 		}
+		
 	}
 }
