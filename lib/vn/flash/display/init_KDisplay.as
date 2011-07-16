@@ -1,28 +1,24 @@
-package vn.core 
+package vn.flash.display 
 {
-	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import vn.flash.kCopyProps;
 	/**
 	 * ...
 	 * @author thienhaflash
 	 */
-	public class CoreAS3 
+	public function init_KDisplay(stage: Stage, setupDefaults: Boolean = true) : _IKDisplay
 	{
-		
-		public static function initialize(stage: Stage, setupDefaults: Boolean = true): void {
-			if (!stage) return;
-			
+		if (!KDisplay) {
 			flashroot	= stage.root;
 			flashstage	= stage;
+			KDisplay	= new _KDisplayImpl();
 			
 			if (setupDefaults) {
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
-			}
+			}			
 		}
+		return KDisplay;
 	}
-
 }

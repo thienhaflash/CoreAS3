@@ -1,4 +1,4 @@
-package
+package vn.flash.event
 {
 	import flash.display.Shape;
 	import flash.events.Event;

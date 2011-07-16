@@ -1,10 +1,10 @@
-package vn.flash 
+package vn.flash.display 
 {
 	import flash.display.DisplayObject;
 	/**
 	 * ...
 	 * @author thienhaflash
 	 */
-	public static var flashroot : DisplayObject;
+	public var flashroot : DisplayObject;
 
 }

@@ -1,9 +1,9 @@
-package vn.flash 
+package vn.flash.display 
 {
 	import flash.display.Stage;
 	/**
 	 * ...
 	 * @author thienhaflash
 	 */
-	public static flashstage: Stage;
+	public var flashstage: Stage;
 }

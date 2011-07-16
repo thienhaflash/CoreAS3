@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SWCProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <FlexBinPath />
-  <FlashBinPath />
+  <FlexBinPath>.\bin\CoreAS3.swc</FlexBinPath>
+  <FlashBinPath>.\bin\CoreAS3.flash.swc</FlashBinPath>
   <FlexIncludeASI>false</FlexIncludeASI>
   <MakeCS3>false</MakeCS3>
   <MakeMXI>false</MakeMXI>
   <IntegrateAsDoc>true</IntegrateAsDoc>
   <LaunchAEM>false</LaunchAEM>
+  <MXIVersion />
   <MXPIncludeASI>false</MXPIncludeASI>
-  <Flex_IgnoreClasses />
-  <CS3_IgnoreClasses />
+  <MXIAuthor />
+  <MXIDescription />
+  <MXIUIAccessText />
+  <Flex_IgnoreClasses>
+    <string>src\main.as</string>
+    <string>lib\vn\manager\colormatrix.as</string>
+    <string>lib\vn\flash\event\ikevent.as</string>
+    <string>lib\vn\flash\event\keventimpl.as</string>
+  </Flex_IgnoreClasses>
+  <CS3_IgnoreClasses>
+    <string>test\testbase.as</string>
+    <string>src\main.as</string>
+    <string>lib\vn\manager\colormatrix.as</string>
+    <string>lib\vn\flash\event\ikevent.as</string>
+    <string>lib\vn\flash\event\keventimpl.as</string>
+  </CS3_IgnoreClasses>
+  <CS3_ComponentClass />
+  <CS3_ComponentName />
+  <CS3_ComponentGroup />
+  <CS3_ComponentToolTip />
+  <CS3_ComponentIconFile />
   <CS3_PreviewType>None</CS3_PreviewType>
+  <CS3_PreviewResource />
 </SWCProject>
