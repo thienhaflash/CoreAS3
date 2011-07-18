@@ -7,7 +7,7 @@ package vn.flash.display
 	 * ...
 	 * @author thienhaflash
 	 */
-	public function init_KDisplay(stage: Stage, setupDefaults: Boolean = true) : _IKDisplay
+	public function init_KDisplay(stage: Stage, setupDefaults: Boolean = true) : IKDisplay
 	{
 		if (!KDisplay) {
 			flashroot	= stage.root;

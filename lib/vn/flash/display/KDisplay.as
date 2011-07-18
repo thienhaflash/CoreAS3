@@ -6,5 +6,5 @@ package vn.flash.display
 	 * ...
 	 * @author thienhaflash
 	 */
-	public var KDisplay : _IKDisplay;
+	public var KDisplay : IKDisplay;
 }

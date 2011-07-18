@@ -3,13 +3,14 @@ package vn.flash.display
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.filters.ColorMatrixFilter;
+	import flash.geom.Matrix;
 	import flash.text.TextField;
 	
 	/**
 	 * ...
 	 * @author thienhaflash
 	 */
-	internal interface _IKDisplay 
+	public interface IKDisplay 
 	{
 		function get stage(): Stage;
 		function get root(): DisplayObject;
@@ -44,9 +45,8 @@ package vn.flash.display
 		//function invert(target: Object, doInvert: Boolean = true): void;
 		
 		/* UTILS */
-		//function rotateAround(target: Object, px: Number, py: Number, angle: Number): void;
-		//function multiRotateAround(targets: Array, px : Number, py: Number, angle: Number): void;
-		//function scaleAround(target: Object, px: Number, py: Number, scale: Number): void;
+		function rotateAround(target: Object, x: Number, y: Number, angle: Number): void;
+		function scaleAround(target: Object, x: Number, y: Number, sx: Number, sy: Number, oMatrix: Matrix = null) : void
 		
 		/* FILTERS */
 		function blur(target: Object, blurX:Number = 4.0, blurY:Number = 4.0, quality:int = 1) : void;

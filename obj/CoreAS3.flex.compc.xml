@@ -31,9 +31,9 @@
     <class>vn.flash.flashvar</class>
     <class>vn.flash.display.flashroot</class>
     <class>vn.flash.display.flashstage</class>
+    <class>vn.flash.display.IKDisplay</class>
     <class>vn.flash.display.init_KDisplay</class>
     <class>vn.flash.display.KDisplay</class>
-    <class>vn.flash.display._IKDisplay</class>
     <class>vn.flash.display._KDisplayImpl</class>
     <class>vn.flash.display.shortcut.addChildren</class>
     <class>vn.flash.display.shortcut.addChildrenByNames</class>
@@ -51,6 +51,8 @@
     <class>vn.flash.display.shortcut.removeChildren</class>
     <class>vn.flash.display.shortcut.removeChildrenByNames</class>
     <class>vn.flash.display.shortcut.removeChildrenExceptNames</class>
+    <class>vn.flash.display.shortcut.rotateAround</class>
+    <class>vn.flash.display.shortcut.scaleAround</class>
     <class>vn.flash.display.shortcut.setMouse</class>
     <class>vn.flash.display.shortcut.tint</class>
     <class>vn.flash.event.EnterFrame</class>

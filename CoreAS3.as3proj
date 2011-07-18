@@ -80,7 +80,6 @@
     <hidden path="KLib.lxml" />
     <hidden path="CoreAS3.lxml" />
     <hidden path="lib\vn\flash\display\_KDisplayImpl.as" />
-    <hidden path="lib\vn\flash\display\IKDisplay.as" />
     <hidden path="lib\vn\flash\display\_IKDisplay.as" />
   </hiddenPaths>
   <!-- Executed before build -->

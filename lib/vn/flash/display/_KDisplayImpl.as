@@ -2,9 +2,11 @@ package vn.flash.display
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.InteractiveObject;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.ColorTransform;
+	import flash.geom.Matrix;
 	import flash.text.TextField;
 	import flash.display.DisplayObject;
 	import flash.text.TextFormat;
@@ -14,7 +16,7 @@ package vn.flash.display
 	 * ...
 	 * @author thienhaflash
 	 */
-	internal class _KDisplayImpl implements _IKDisplay
+	internal class _KDisplayImpl implements IKDisplay
 	{
 		
 	/************************
@@ -75,8 +77,6 @@ package vn.flash.display
 		
 		public function remove(target:Object):DisplayObject {
 			return vn.flash.display.shortcut.remove(target);
-			
-			
 		}
 		
 	/************************
@@ -97,6 +97,18 @@ package vn.flash.display
 		
 		public function bevel(target:Object, distance:Number = 4.0, angle:Number = 45, highlightColor:uint = 0xFFFFFF, highlightAlpha:Number = 1.0, shadowColor:uint = 0x000000, shadowAlpha:Number = 1.0, blurX:Number = 4.0, blurY:Number = 4.0, strength:Number = 1, quality:int = 1, type:String = "inner", knockout:Boolean = false):void {
 			vn.flash.display.shortcut.bevel(target, distance, angle, highlightColor, highlightAlpha, shadowColor, shadowAlpha, blurX, blurY, strength, quality, type, knockout);
+		}
+		
+	/************************
+	 * 		TRANSFORM
+	 ***********************/
+		
+		public function rotateAround(target: Object, x: Number, y: Number, angle: Number): void {
+			vn.flash.display.shortcut.rotateAround(target, x, y, angle);
+		}
+		
+		public function scaleAround(target: Object, x: Number, y: Number, sx: Number, sy: Number, oMatrix: Matrix = null) : void {
+			vn.flash.display.shortcut.scaleAround(target, x, y, sx, sy, oMatrix);
 		}
 		
 	/************************
