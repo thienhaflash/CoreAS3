@@ -12,7 +12,7 @@ package vn.flash.display.shortcut
 		var c	: DisplayObject;
 		var ch	: Array = returnRemovedDO ? [] : null;
 		
-		for (var i: int = arr.length - 1; i > -1; i--) {
+		for (var i: int = pp.numChildren - 1; i > -1; i--) {
 			c	= pp.getChildAt(i);
 			if (c && arr.indexOf(c.name) == -1) {
 				pp.removeChild(c);

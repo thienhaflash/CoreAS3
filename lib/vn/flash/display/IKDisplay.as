@@ -20,7 +20,7 @@ package vn.flash.display
 		function addChildrenByNames(parent: Object, names: *): void;
 		
 		function getChildren(parent: Object, fromTop : Boolean = false, ignoreCount : int = 0): Array;
-		function getChildrenByNames(parent: Object, names: Array): Array;
+		function getChildrenByNames(parent: Object, names: *): Array;
 		function getChildrenExceptNames(parent: Object, exceptNames: *): Array;
 		
 		function removeChildren(parent : Object, returnChildren: Boolean = false, fromTop: Boolean = false, ignoreCount: int = 0): Array;
@@ -29,7 +29,7 @@ package vn.flash.display
 		function remove(target : Object): DisplayObject;
 		
 		/* TEXTFIELD */
-		function format(textfield: TextField, formatObj: Object): void;
+		function format(textfield: TextField, formatObj: Object, useAsDefault:Boolean = true): void;
 		
 		/* INTERACTIVE OBJECT */
 		function setMouse(target: Object

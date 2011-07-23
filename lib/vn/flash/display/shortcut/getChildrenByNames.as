@@ -11,7 +11,7 @@ package vn.flash.display.shortcut
 		var pp	: DisplayObjectContainer = parent as DisplayObjectContainer;
 		var ch	: Array =  (names as Array) || [names];
 		
-		for (var i: int = ch.length - 1; i > -1; i--) {
+		for (var i: int = pp.numChildren - 1; i > -1; i--) {
 			ch[i] = pp.getChildByName(ch[i]) || parent[ch[i]];
 		}
 		return ch;

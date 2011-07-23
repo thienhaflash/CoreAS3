@@ -51,7 +51,7 @@ package vn.flash.display
 			return vn.flash.display.shortcut.getChildren(parent, fromTop, ignoreCount);
 		}
 		
-		public function getChildrenByNames(parent:Object, names:Array):Array {
+		public function getChildrenByNames(parent:Object, names:*):Array {
 			return vn.flash.display.shortcut.getChildrenByNames(parent, names);
 		}
 		
@@ -115,8 +115,8 @@ package vn.flash.display
 	 * 		OTHERS
 	 ***********************/	
 		
-		public function format(textfield:TextField, formatObj:Object):void {
-			vn.flash.display.shortcut.format(textfield, formatObj);
+		public function format(textfield:TextField, formatObj:Object, useAsDefault:Boolean = true):void {
+			vn.flash.display.shortcut.format(textfield, formatObj, useAsDefault);
 		}
 		
 		public function setMouse(target:Object, mouseEnabled:Boolean = false, buttonMode:Boolean = false, mouseChildren:Boolean = false):void {

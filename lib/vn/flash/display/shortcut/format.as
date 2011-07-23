@@ -7,7 +7,7 @@ package vn.flash.display.shortcut
 	 * ...
 	 * @author thienhaflash
 	 */
-	public function format(textfield: TextField, formatObj: Object): TextField { /* small secrets : useDefaults : true */
+	public function format(textfield: TextField, formatObj: Object, useAsDefault:Boolean = true): TextField { /* small secrets : useDefaults : true */
 		if (!formatObj || !textfield) return textfield;
 		
 		var tff		: TextFormat	= textfield.getTextFormat();
@@ -24,7 +24,7 @@ package vn.flash.display.shortcut
 			FormatData.formatProps[prop] ? tff[prop] = formatObj[prop] : textfield[prop] = formatObj[prop];
 		}
 		textfield.setTextFormat(tff);
-		textfield.defaultTextFormat = tff;
+		if (useAsDefault) textfield.defaultTextFormat = tff;
 		return textfield;
 	}
 }
