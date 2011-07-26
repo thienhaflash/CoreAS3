@@ -1,4 +1,4 @@
-package vn.flash.event
+package vn.manager
 {
 	import flash.display.Shape;
 	import flash.events.Event;
@@ -12,7 +12,7 @@ package vn.flash.event
 	 * @features Support once listeners and each frame callbacks with parameters
 	 * 
 	 */
-	public class EnterFrame 
+	public class KEnterFrame 
 	{
 		public static var heart 	: Shape			= new Shape();//listen to EnterFrame Event
 		private static var nextList : Dictionary	= new Dictionary();
@@ -55,5 +55,4 @@ package vn.flash.event
 			}
 		}
 	}
-
 }

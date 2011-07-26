@@ -81,6 +81,9 @@
     <hidden path="CoreAS3.lxml" />
     <hidden path="lib\vn\flash\display\_KDisplayImpl.as" />
     <hidden path="lib\vn\flash\display\_IKDisplay.as" />
+    <hidden path="calculations.mw" />
+    <hidden path="lib\vn\flash\event\_KEventImpl.as" />
+    <hidden path="lib\vn\flash\event\shortcut\_KEventVars.as" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />

@@ -3,6 +3,7 @@
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import vn.manager.shortcut.onEachFrame;
 	/**
 	 * ...
 	 * @author kudoshinichi
@@ -10,8 +11,6 @@
 	public class Aim
 	{
 		protected static var dict : Dictionary;
-		protected static var heart: Shape;
-		
 		protected var target : Object;
 		
 		public var dirty	: Boolean;
@@ -23,11 +22,10 @@
 		{
 			if (!dict) {
 				dict = new Dictionary(true);
-				heart = new Shape();
-				heart.addEventListener(Event.ENTER_FRAME, _update);
+				onEachFrame(_update);
 			}
 			
-			v = 1 / 5;
+			v = 1 / 10;
 			
 			var aim : Aim = dict[tar];
 			
@@ -66,7 +64,7 @@
 			return obj;
 		}
 		
-		private static function _update(e:Event):void 
+		private static function _update():void 
 		{
 			var s	: String;
 			var aim : Aim;

@@ -10,7 +10,7 @@ package
 	import vn.flash.display.shortcut.bevel;
 	import vn.flash.display.shortcut.blur;
 	import vn.flash.display.shortcut.brightness;
-	import vn.flash.display.shortcut.dropShadow;
+	import vn.flash.display.shortcut.dropshadow;
 	import vn.flash.display.shortcut.format;
 	import vn.flash.display.shortcut.getChildren;
 	import vn.flash.display.shortcut.getChildrenByNames;
@@ -24,6 +24,9 @@ package
 	import vn.flash.display.shortcut.scaleAround;
 	import vn.flash.display.shortcut.setMouse;
 	import vn.flash.display.shortcut.tint;
+	import vn.flash.event.shortcut.addLsn;
+	import vn.flash.event.shortcut.remLsn;
+	//import vn.manager.Aim;
 	
 	/**
 	 * ...
@@ -52,6 +55,14 @@ package
 			//addChild(format(new TextField(), { useDefaults: true, border: true, text: 'hihihehe', x: 100, bold : true, size: 30 }, true));
 			
 			m = mc.transform.matrix;
+			
+			addLsn(stage, MouseEvent.MOUSE_DOWN, trace, ['MouseDown']);
+			addLsn(stage, MouseEvent.MOUSE_UP, trace, ['MouseUp']);
+			addLsn(stage, MouseEvent.MOUSE_MOVE, trace, ['MouseMove']);
+			addLsn(stage, MouseEvent.MOUSE_MOVE, function (s: String): void { trace(s) }, ['MouseMove 2']);
+			remLsn(stage, MouseEvent.MOUSE_MOVE);
+			//remLsn(stage);
+			//remLsn(stage, null, trace); //remove all trace listeners, only MouseMove 2 left !
 		}
 		
 		protected var m : Matrix;
@@ -70,7 +81,10 @@ package
 			//glow(mc, 0x00ff00, 1, 10 * pctX, 10 * pctX);
 			//blur(mc, 10 * pctX, 10 * pctX);
 			//bevel(mc, 10 * pctX);
-			dropShadow(mc, 10 * pctX);
+			//dropshadow(mc, 10 * pctX);
+			
+		//	Aim.getProp(mc).x = stage.mouseX;
+			//Aim.getProp(mc).y = stage.mouseY;
 		}
 		
 	}

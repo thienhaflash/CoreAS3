@@ -87,8 +87,8 @@ package vn.flash.display
 			vn.flash.display.shortcut.blur(target, blurX, blurY, quality);
 		}
 		
-		public function dropShadow(target: Object, distance:Number = 4.0, angle:Number = 45, color:uint = 0, alpha:Number = 1.0, blurX:Number = 4.0, blurY:Number = 4.0, strength:Number = 1.0, quality:int = 1, inner:Boolean = false, knockout:Boolean = false, hideObject:Boolean = false): void {
-			vn.flash.display.shortcut.dropShadow(target, distance, angle, color, alpha, blurX, blurY, strength, quality, inner, knockout, hideObject);
+		public function dropshadow(target: Object, distance:Number = 4.0, angle:Number = 45, color:uint = 0, alpha:Number = 1.0, blurX:Number = 4.0, blurY:Number = 4.0, strength:Number = 1.0, quality:int = 1, inner:Boolean = false, knockout:Boolean = false, hideObject:Boolean = false): void {
+			vn.flash.display.shortcut.dropshadow(target, distance, angle, color, alpha, blurX, blurY, strength, quality, inner, knockout, hideObject);
 		}
 		
 		public function glow(target: Object, color:uint = 0xFF0000, alpha:Number = 1.0, blurX:Number = 6.0, blurY:Number = 6.0, strength:Number = 2, quality:int = 1, inner:Boolean = false, knockout:Boolean = false) : void {

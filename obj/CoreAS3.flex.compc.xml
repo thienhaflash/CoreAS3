@@ -55,13 +55,13 @@
     <class>vn.flash.display.shortcut.scaleAround</class>
     <class>vn.flash.display.shortcut.setMouse</class>
     <class>vn.flash.display.shortcut.tint</class>
-    <class>vn.flash.event.EnterFrame</class>
     <class>vn.flash.event.shortcut.onEachFrame</class>
     <class>vn.flash.event.shortcut.onNextFrame</class>
     <class>vn.flash.event.shortcut.removeOnEachFrame</class>
     <class>vn.flash.event.shortcut.removeOnNextFrame</class>
     <class>vn.manager.Aim</class>
     <class>vn.manager.Drag</class>
+    <class>vn.manager.EnterFrame</class>
     <class>vn.math.copyMatrix</class>
     <class>vn.math.pct2Val</class>
     <class>vn.math.val2Pct</class>

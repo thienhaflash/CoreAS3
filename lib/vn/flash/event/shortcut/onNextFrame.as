@@ -1,6 +1,7 @@
 package vn.flash.event.shortcut 
 {
-	import vn.flash.event.EnterFrame;
+	import vn.manager.EnterFrame;
+	
 	/**
 	 * ...
 	 * @author thienhaflash
