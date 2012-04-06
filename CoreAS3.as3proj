@@ -18,7 +18,6 @@
     <class path="src" />
     <class path="test" />
     <class path="lib" />
-    <class path="..\..\Dropbox\AS3Lib\swc" />
   </classpaths>
   <!-- Build options -->
   <build>
